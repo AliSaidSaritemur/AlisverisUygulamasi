@@ -1,22 +1,28 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet, Text,TouchableOpacity } from 'react-native';
 import { auth } from '../fireBase';
+import UserService from '../components/UserService';
+import UserSingUp from '../components/UserSingUp';
 
 export default function LoginScreeen ({ navigation })  {
 
   const [email, setEmail ] = useState('');
   const [password, setPassword ] = useState('');
-
+  const [addUser, deleteUser, getUser, logIn] =UserService();
+  const [modalSignUpIsVisible, setmodalSignUpIsVisible] = useState(false)   
+  const startModalSignUp = () => {
+    setmodalSignUpIsVisible(true)
+  }; 
+  const endModalSignUp=()=>{
+    setmodalSignUpIsVisible(false)
+  }
   const handleLogin = () => {
-    auth.signInWithEmailAndPassword(email, password).then(userCredentials => {
-      const user = userCredentials.user;
-      console.log(user.email);
-  }).catch(error => alert(error.message));
-    console.log('Email:', email);
-    console.log('Şifre:', password);
 
-    // if giris true
-    navigation.navigate('Products');
+  };
+  
+  const singInUser = (email,name,password, surname, telno ) => {
+    endModalSignUp();
+    addUser(email,name,password, surname, telno,"user");
   };
 
   return (
@@ -34,7 +40,10 @@ export default function LoginScreeen ({ navigation })  {
         onChangeText={(text) => setPassword(text)}
       />
  <TouchableOpacity  onPress={handleLogin} style={[styles.button, styles.logInButton]}><Text style={styles.buttonText}>Giriş Yap</Text></TouchableOpacity>
+ <TouchableOpacity  onPress={startModalSignUp} style={[styles.button, styles.SignUputton]}><Text style={styles.buttonText}>Kayıt Ol</Text></TouchableOpacity>
+ <UserSingUp visible={modalSignUpIsVisible} onAddUser={singInUser} onCancel={endModalSignUp}/>
     </View>
+    
   );
 };
 
@@ -69,5 +78,8 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     fontWeight: 'bold',
+  },
+  SignUputton: {
+    backgroundColor: '#1976d2',
   },
 });
