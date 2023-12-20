@@ -5,14 +5,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from 'react'
 import { app, db } from '../fireBase';
 import { useEffect,useState } from 'react';
-import { getFirestore, collection, addDoc, doc, deleteDoc, getDoc } from 'firebase/firestore';
+import { getFirestore, collection, addDoc, doc, deleteDoc, getDoc,query,where,getDocs } from 'firebase/firestore';
 
 export default ()=> {
     const [uniqueId,setUniqueId] = useState("");
     useEffect(() => {
         generateId();
       }, [uniqueId])
-
     const generateId = async() => {
         try {
           const id = await AsyncStorage.getItem('id')
@@ -32,15 +31,14 @@ export default ()=> {
     const addUser = (email,name,password, surname, telno,role ) => {
         console.log("addUser");
         try {
-          const uniqueId = 'someUniqueId'; 
-          const docRef =  addDoc(collection(db, "Users"), {
+          addDoc(collection(db, "Users"), {
             Email: email,
             Name: name,
             Password: password,
             Surname: surname,
             TelNo: telno,
             Role: role,
-            id: uniqueId
+            id: uniqueId,
           });
           if(Platform.OS === "android"){
             ToastAndroid.show(`User added`, ToastAndroid.SHORT); 
@@ -75,15 +73,27 @@ export default ()=> {
     }
 
     const logIn = async (email, password) => {
-        const auth = getAuth();
-        try {
-            const userCredential = await signInWithEmailAndPassword(auth, email, password);
-            const user = userCredential.user;
-            console.log("User signed in: ", user);
-        } catch (error) {
-            console.error("Error signing in: ", error);
-        }
-    }
+      const db = getFirestore();
+  
+      try {
+          const usersRef = collection(db, "Users");
+          const q = query(usersRef, where("Email", "==", email), where("Password", "==", password));
+          const querySnapshot = await getDocs(q);
+  
+          if (!querySnapshot.empty) {
+              const user = querySnapshot.docs[0].data();
+              // setLoginUser(user);
+              // console.log("User signed in: ", user);
+              return user
+          } else {
+              console.log("Invalid email or password.");
+              return null;
+          }
+      } catch (error) {
+          console.error("Error signing in: ", error);
+          return null;
+      }
+  }
 
   return [addUser, deleteUser, getUser, logIn]
 }

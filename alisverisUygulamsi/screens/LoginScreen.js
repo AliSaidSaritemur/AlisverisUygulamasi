@@ -3,12 +3,15 @@ import { View, TextInput, Button, StyleSheet, Text,TouchableOpacity } from 'reac
 import { auth } from '../fireBase';
 import UserService from '../components/UserService';
 import UserSingUp from '../components/UserSingUp';
+import ProductService from '../components/ProductService';
+
 
 export default function LoginScreeen ({ navigation })  {
 
   const [email, setEmail ] = useState('');
   const [password, setPassword ] = useState('');
   const [addUser, deleteUser, getUser, logIn] =UserService();
+
   const [modalSignUpIsVisible, setmodalSignUpIsVisible] = useState(false)   
   const startModalSignUp = () => {
     setmodalSignUpIsVisible(true)
@@ -16,8 +19,20 @@ export default function LoginScreeen ({ navigation })  {
   const endModalSignUp=()=>{
     setmodalSignUpIsVisible(false)
   }
-  const handleLogin = () => {
+  const handleLogin = async () => {
+    const loginUser =await logIn(email, password);
 
+    if(loginUser != null) {
+      if(loginUser.Role == "admin") {
+        navigation.navigate('Home');
+      } else {
+        navigation.navigate('Home');
+      }
+      console.log("Giriş başarılı");
+    } else {
+      alert("Kullanıcı adı veya şifre hatalı");
+    }
+    console.log(loginUser);
   };
   
   const singInUser = (email,name,password, surname, telno ) => {
