@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList,StyleSheet } from 'react-native';
-import ProductService from './ProductService';
+import ProductService from '../Services/ProductService';
 import ProductImage from './ProductImage';
 
 const ProductList = () => {

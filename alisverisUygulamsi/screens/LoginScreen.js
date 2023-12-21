@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet, Text,TouchableOpacity } from 'react-native';
 import { auth } from '../fireBase';
-import UserService from '../components/UserService';
 import UserSingUp from '../components/UserSingUp';
-import ProductService from '../components/ProductService';
+import ProductService from '../Services/ProductService';
+import UserService from '../Services/UserService';
 
 
 export default function LoginScreeen ({ navigation })  {
