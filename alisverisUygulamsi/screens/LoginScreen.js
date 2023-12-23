@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { View, TextInput, Button, StyleSheet, Text,TouchableOpacity } from 'react-native';
 import { auth } from '../fireBase';
 import UserSingUp from '../components/UserSingUp';
 import ProductService from '../Services/ProductService';
 import UserService from '../Services/UserService';
+import SessionsService from '../Services/SessionsService';
+import { ScaledSheet } from 'react-native-size-matters';
 
 
 export default function LoginScreeen ({ navigation })  {
@@ -11,8 +13,18 @@ export default function LoginScreeen ({ navigation })  {
   const [email, setEmail ] = useState('');
   const [password, setPassword ] = useState('');
   const [addUser, deleteUser, getUser, logIn] =UserService();
+  const[setSessionWithId,getSessionWithId]=SessionsService();
+  const [modalSignUpIsVisible, setmodalSignUpIsVisible] = useState(false)  
+  useEffect(() => {
+    const checkSession = async () => {
+      const email = await getSessionWithId();
+      if (email !== null && email !== undefined) {
+        navigation.navigate('Home');
+      }
+    };
 
-  const [modalSignUpIsVisible, setmodalSignUpIsVisible] = useState(false)   
+    checkSession();
+  }, []); 
   const startModalSignUp = () => {
     setmodalSignUpIsVisible(true)
   }; 
@@ -21,23 +33,21 @@ export default function LoginScreeen ({ navigation })  {
   }
   const handleLogin = async () => {
     const loginUser =await logIn(email, password);
-
     if(loginUser != null) {
+      setSessionWithId(loginUser.id);
       if(loginUser.Role == "admin") {
-        navigation.navigate('Home');
+        navigation.navigate('AdminHome');
       } else {
         navigation.navigate('Home');
       }
-      console.log("Giriş başarılı");
     } else {
       alert("Kullanıcı adı veya şifre hatalı");
     }
-    console.log(loginUser);
   };
-  
-  const singInUser = (email,name,password, surname, telno ) => {
+
+  const singInUser = (email,name,password, surname, telno,adress ) => {
     endModalSignUp();
-    addUser(email,name,password, surname, telno,"user");
+    addUser( email, name, password, surname, telno, adress ,"user");
   };
 
   return (
@@ -63,7 +73,7 @@ export default function LoginScreeen ({ navigation })  {
 };
 
 
-const styles = StyleSheet.create({
+const styles = ScaledSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',

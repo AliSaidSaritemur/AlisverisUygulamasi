@@ -1,13 +1,13 @@
 import { Button, KeyboardAvoidingView, Modal, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
 import React, { useState } from 'react'
 
-export default function UserSingUp({visible,onAddUser,onCancel}) {
-    const [email, setEmail] = useState("");
-    const [name, setName] = useState("");
-    const [password, setPassword] = useState("");
-    const [surname, setSurname] = useState("");
-    const [telNo, setTelNo] = useState("");
-    const [adress, setAdress] = useState("");
+export default function UserUpdate({visible,onUpdateUser,onCancel,user}) {
+    const [email, setEmail] = useState(user.Email);
+    const [name, setName] = useState(user.Name);
+    const [password, setPassword] = useState(user.Password);
+    const [surname, setSurname] = useState(user.Surname);
+    const [telNo, setTelNo] = useState(user.TelNo);
+    const [adress, setAdress] = useState(user.Adress);
     const validateInput = (email, phone, password, name, username) => {
 
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -41,21 +41,13 @@ export default function UserSingUp({visible,onAddUser,onCancel}) {
     
       return { isValid: true, message: 'All inputs are valid' };
     };
-    const refreshHandler = () => {
-        setEmail("");
-        setName("");
-        setPassword("");
-        setSurname("");
-        setTelNo("");
-        setAdress("");
-    };
+
     const addUserHandler = async() => {
       
       const { isValid, message } = validateInput(email, telNo, password, name, surname,adress);
       
       if(isValid){
-        onAddUser(email,name,password,surname,telNo,adress);
-        refreshHandler();
+        onUpdateUser(email,name,password,surname,telNo,adress);
         onCancel();
       }
       else{
@@ -84,7 +76,7 @@ export default function UserSingUp({visible,onAddUser,onCancel}) {
     <Button title="İptal Et" color="red" onPress={onCancel}/>
 </View>
 <View style={styles.button} >
-    <Button title="Kayıt Ol" color="blue" onPress={addUserHandler}/>
+    <Button title="Güncelle" color="blue" onPress={addUserHandler}/>
 </View>
 
           </View>

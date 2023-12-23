@@ -1,28 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList,StyleSheet } from 'react-native';
+import { View, Text, FlatList,StyleSheet, TouchableOpacity } from 'react-native';
 import ProductService from '../Services/ProductService';
 import ProductImage from './ProductImage';
-
-const ProductList = () => {
+import { scale, verticalScale, moderateScale, ScaledSheet } from 'react-native-size-matters';
+const ProductList = ({onPressProduct,onRefreshPage}) => {
   const [products, setProducts] = useState([]);
       const [,getProductList]=ProductService();
   useEffect(() => {
     const fetchProducts = async () => {
       const productList = await getProductList();
-      console.log("Product list: ", productList);
       setProducts(productList);
     };
-
     fetchProducts();
-  }, []);
+  }, [onRefreshPage]);
 
   const renderItem = ({ item }) => (
+    <TouchableOpacity onPress={()=>onPressProduct(item)}> 
     <View style={styles.itemContainer}>
-      <ProductImage productName={item.Name} height={100} width={100} />
-      <Text style={styles.itemName}>{item.Name}</Text>
+      <ProductImage productName={item.Name} height={verticalScale(80)} width={scale(80)} />
+       <Text style={styles.itemName}>{item.Name}</Text>
       <Text style={styles.itemPrice}>Fiyat: {item.Price}₺</Text>
       <Text style={styles.itemSalesCount}>Satış Sayısı: {item.SalesCount}</Text>
     </View>
+    </TouchableOpacity>
+
   );
   
   return (
@@ -35,16 +36,16 @@ const ProductList = () => {
     />
   );
 };
-const styles = StyleSheet.create({
+const styles = ScaledSheet.create({
   listContainer: {
-    padding: 10,
+    padding: moderateScale(10),
   },
   itemContainer: {
     margin: 6,
     alignItems: 'center',
     backgroundColor: '#f8f8f8',
     borderRadius: 30,
-    padding: 10,
+    padding: moderateScale(10),
   },
   itemName: {
     fontSize: 16,

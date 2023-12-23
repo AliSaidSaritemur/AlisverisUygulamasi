@@ -5,30 +5,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from 'react'
 import { app, db } from '../fireBase';
 import { useEffect,useState } from 'react';
-import { getFirestore, collection, addDoc, doc, deleteDoc, getDoc,query,where,getDocs } from 'firebase/firestore';
+import { getFirestore, collection, addDoc, doc, deleteDoc, getDoc,query,where,getDocs,updateDoc,increment } from 'firebase/firestore';
 
 const firestore = getFirestore(app);
 
 export default ()=> {
-    const [uniqueId,setUniqueId] = useState("");
-    useEffect(() => {
-        generateId();
-      }, [uniqueId])
-    const generateId = async() => {
-        try {
-          const id = await AsyncStorage.getItem('id')
-          if(id !== null) {
-            setUniqueId(id);
-          }
-          else{
-            const newId = Math.random().toString();
-            setUniqueId(newId);
-            await AsyncStorage.setItem('id', uniqueId);
-          }
-        } catch(e) {
-          console.log(e);
-        }
-    }
 
     const addProduct = (name,price,salesCount ) => {
         console.log("addProduct");
@@ -50,11 +31,34 @@ export default ()=> {
         try {
             const querySnapshot = await getDocs(collection(db, "Products"));
             const productList = querySnapshot.docs.map(doc => doc.data());
-            console.log("Product list: ", productList);
             return productList;
         } catch (error) {
             console.error("Error fetching product list: ", error);
         }
     };
-      return [addProduct,getProductList];
+    const incrementSalesCount = async (name) => {
+      try {
+        const id = await getIdByName(name); // add await here
+        const productRef = doc(db, "Products", id);
+        await updateDoc(productRef, { SalesCount: increment(1) });
+        console.log("SalesCount incremented successfully.");
+      } catch (error) {
+        console.error("Error incrementing SalesCount: ", error);
+      }
+    }
+  const getIdByName = async (name) => {
+    try {
+        const q = query(collection(db, "Products"), where("Name", "==", name));
+        const querySnapshot = await getDocs(q);
+        let id = null;
+        querySnapshot.forEach((doc) => {
+            id = doc.id;
+        });
+        console.log("ID fetched successfully: ", id);
+        return id;
+    } catch (error) {
+        console.error("Error fetching ID: ", error);
+    }
+}
+      return [addProduct,getProductList,incrementSalesCount];
 }
