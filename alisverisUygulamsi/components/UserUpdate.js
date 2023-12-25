@@ -2,12 +2,16 @@ import { Button, KeyboardAvoidingView, Modal, ScrollView, StyleSheet, Text, Text
 import React, { useState } from 'react'
 
 export default function UserUpdate({visible,onUpdateUser,onCancel,user}) {
+  if(user==null){
+    return null
+  }
     const [email, setEmail] = useState(user.Email);
     const [name, setName] = useState(user.Name);
     const [password, setPassword] = useState(user.Password);
     const [surname, setSurname] = useState(user.Surname);
     const [telNo, setTelNo] = useState(user.TelNo);
     const [adress, setAdress] = useState(user.Adress);
+    const [id, setId] = useState(user.UserId);
     const validateInput = (email, phone, password, name, username) => {
 
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -47,7 +51,7 @@ export default function UserUpdate({visible,onUpdateUser,onCancel,user}) {
       const { isValid, message } = validateInput(email, telNo, password, name, surname,adress);
       
       if(isValid){
-        onUpdateUser(email,name,password,surname,telNo,adress);
+        onUpdateUser(id,email,name,password,surname,telNo,adress);
         onCancel();
       }
       else{

@@ -3,8 +3,8 @@ import React from 'react'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import HomeScreen from '../screens/HomeScreen';
 import LoginScreeen from '../screens/LoginScreen';
-import AdminProductsScreen from '../screens/AdminProductsScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import BasketScreen from '../screens/BasketScreen';
 
 const Tab = createBottomTabNavigator();
 const homeName = "Home";
@@ -29,7 +29,6 @@ export default function Navbar() {
           iconName = focused ? 'settings' : 'settings-outline';
         }
 
-        // You can return any component that you like here!
         return <Ionicons name={iconName} size={size} color={color} />;
       },
     })}
@@ -42,7 +41,7 @@ export default function Navbar() {
 
       <Tab.Screen name={"Home"} component={HomeScreen} />
       <Tab.Screen name={"Details"} component={LoginScreeen} />
-      <Tab.Screen name={"Settings"} component={AdminProductsScreen} />
+      <Tab.Screen name={"Settings"} component={BasketScreen} />
   </Tab.Navigator>
   )
 }

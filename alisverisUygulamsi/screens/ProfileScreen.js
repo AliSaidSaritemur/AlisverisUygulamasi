@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View,Image, Button,TouchableOpacity } from 'react-native';
-import SessionsService from '../Services/SessionsService';
-import UserService from '../Services/UserService';
 import UserUpdate from '../components/UserUpdate';
 import LastOrdersUser from '../components/LastOrdersUser';
+import { getSession } from '../Services/SessionsService'; 
+import {updateUser} from '../Services/UserService';
 
 export default function ProfileScreen({ navigation }) {
-  const [,, , , updateUser] = UserService();
-  const [id, setId] = useState('');
-  const [,, getSession] = SessionsService();
-  const [,,getUser,] = UserService();
+
   const [user, setUser] = useState();
   const [modalUpdateIsVisible, setModalUpdateIsVisible] = useState(false)  
   const [modalLastOrdersVisible, setModalLastOrdersVisible] = useState(false)  
@@ -37,7 +34,7 @@ const startModalLastOrders = () => {
     setModalLastOrdersVisible(false)
   };
 
-  const UpdateUser =(email,name,password,surname,telNo,adress)=>{
+  const UpdateUser =(id,email,name,password,surname,telNo,adress)=>{
     updateUser(id,email,name,password,surname,telNo,adress);
     endModalUpdate();
     setUpdateInfoPressed(true);

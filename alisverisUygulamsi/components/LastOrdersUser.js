@@ -1,23 +1,35 @@
-import { Button, FlatList, Modal, StyleSheet, Text, View } from 'react-native'
+import { Button, FlatList, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React,{useState,useEffect} from 'react'
-import OrderedProducts, {getOrderedProductListWithUserId} from '../Services/OrderedProductService'
-import SessionsService from '../Services/SessionsService';
-import OrderedProductService from '../Services/OrderedProductService';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import {getSession} from '../Services/SessionsService';
 import ProductImage from './ProductImage';
+import {getOrderedProducPackagetListWithUserId} from '../Services/OrderedProductPackageService';
+import { scale } from 'react-native-size-matters';
+import Receipt from './Receipt';
 
 export default  function LastOrdersUser({visible,onCancel,refreshPage}) {
     const [orders, setOrders] = useState([]);
-    const [,, getSession] = SessionsService();
-    const [,,getOrderedProductListWithUserId]=OrderedProductService();
-   useEffect(() => {
-    const fetchOrders = async () => {
-        const user = await getSession();
-      setOrders(await getOrderedProductListWithUserId( user.UserId));
-      console.log("bizim orders: ",orders);
-    };
+    const [receiptVisible, setReceiptVisible] = useState(false);
+    const [user, setUser] = useState(null);
+    const [date, setDate] = useState(null);
+    useEffect(() => {
+      const fetchOrders = async () => {
+        const sessionUser = await getSession();
+        setUser(sessionUser);
+        if (sessionUser) {
+          const userOrders = await getOrderedProducPackagetListWithUserId(sessionUser.UserId);
+          setOrders(userOrders);
+        }
+      };
+    
+      fetchOrders();
+    }, [visible, refreshPage]);
 
-    fetchOrders();
-  }, [visible,refreshPage]);
+const getReciepe=(date)=>{
+  setDate(date);
+  setReceiptVisible(true);
+}
+
   return (
    <Modal
         animationType="slide"
@@ -26,18 +38,23 @@ export default  function LastOrdersUser({visible,onCancel,refreshPage}) {
         data={orders}
         renderItem={({ item }) => (
           <View style={styles.container}>
-         <ProductImage productName={item.ProductName} height={100} width={100} />
-         <View>
-            <Text style={styles.productInfo} >Ürün Adı:  {item.ProductName}</Text>
-            <Text style={styles.productInfo} >Ürün Fiyatı:  {item.Price}₺</Text>
+            <TouchableOpacity onPress={()=>getReciepe(item.Date)}>
+       <Ionicons name="newspaper-outline" size={scale(100)} color="orange" />
+      </TouchableOpacity>
+         <View style={styles.productInfoContainer}>
+            <Text style={styles.productInfo} >İşlem Ücreti:  {item.TotalPrice}₺</Text>
             <Text style={styles.productInfo} >İşlem Tarihi:  {item.Date}</Text>
+            <Text style={styles.productInfo} >Adress:  {item.Adress}</Text>
             </View>
     
           </View>
         )}
       />
       <Button title="Kapat" onPress={onCancel} />
+      <Receipt visible={receiptVisible} onCancel={()=>setReceiptVisible(false)} 
+      user={user} refreshPage={refreshPage} date={date}/>
       </Modal>
+     
 
   )
 }
@@ -55,6 +72,8 @@ container:{
 productInfo:{
     fontSize: 16,
     fontWeight: 'bold',
-}
+},
+productInfoContainer:{
+  marginLeft: 10,},
 
 })

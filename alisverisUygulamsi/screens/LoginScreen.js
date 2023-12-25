@@ -1,30 +1,17 @@
 import React, { useState,useEffect } from 'react';
-import { View, TextInput, Button, StyleSheet, Text,TouchableOpacity } from 'react-native';
-import { auth } from '../fireBase';
+import { View, TextInput, Text,TouchableOpacity } from 'react-native';
 import UserSingUp from '../components/UserSingUp';
-import ProductService from '../Services/ProductService';
-import UserService from '../Services/UserService';
-import SessionsService from '../Services/SessionsService';
 import { ScaledSheet } from 'react-native-size-matters';
-
+import { logIn,addUser } from '../Services/UserService';
+import {setSessionWithId,isSessionExist} from '../Services/SessionsService';
 
 export default function LoginScreeen ({ navigation })  {
 
   const [email, setEmail ] = useState('');
   const [password, setPassword ] = useState('');
-  const [addUser, deleteUser, getUser, logIn] =UserService();
-  const[setSessionWithId,getSessionWithId]=SessionsService();
-  const [modalSignUpIsVisible, setmodalSignUpIsVisible] = useState(false)  
-  useEffect(() => {
-    const checkSession = async () => {
-      const email = await getSessionWithId();
-      if (email !== null && email !== undefined) {
-        navigation.navigate('Home');
-      }
-    };
 
-    checkSession();
-  }, []); 
+  const [modalSignUpIsVisible, setmodalSignUpIsVisible] = useState(false)  
+ 
   const startModalSignUp = () => {
     setmodalSignUpIsVisible(true)
   }; 
@@ -36,6 +23,7 @@ export default function LoginScreeen ({ navigation })  {
     if(loginUser != null) {
       setSessionWithId(loginUser.id);
       if(loginUser.Role == "admin") {
+        console.log("admin giriş yapıldı");
         navigation.navigate('AdminHome');
       } else {
         navigation.navigate('Home');
@@ -51,6 +39,7 @@ export default function LoginScreeen ({ navigation })  {
   };
 
   return (
+    
     <View style={styles.container}>
       <Text style={styles.title}>Alışveriş Uygulaması</Text>
       <TextInput

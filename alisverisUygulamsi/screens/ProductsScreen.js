@@ -1,19 +1,27 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React,{useState} from 'react'
-import ProductImage from '../components/ProductImage'
+import React,{useState,useEffect} from 'react'
 import ProductList from '../components/ProductList'
 import ProductDetail from '../components/ProductDetail'
-import ProductService from '../Services/ProductService'
-import OrderedProducts from '../Services/OrderedProductService'
-import SessionsService from '../Services/SessionsService'
+import {addOrderedProduct} from '../Services/OrderedProductService'
+import {addBasketProduct} from '../Services/BasketProductService'
+import { getSession } from '../Services/SessionsService'; 
+import {incrementSalesCount} from '../Services/ProductService';
 
-export default function ProductsScreen() {  
+export default function ProductsScreen({navigation}) {  
   const [modalProductDetailVisible, setModalProductDetailVisible] = useState(false);
-  const [,, getSession] = SessionsService();
-  const[,,incrementSalesCount]=ProductService();
-  const[addOrderedProduct ]=OrderedProducts();
   const [product, setProduct] =useState(null);
   const[refreshPage,setRefreshPage]=useState(false);
+
+useEffect(() => {
+  const fetchProducts = async () => {
+    setRefreshPage(!refreshPage);
+  };
+   navigation.addListener('focus', () => {
+    fetchProducts();
+  });
+
+}, [navigation,refreshPage]);
+
 
   const startModalProductDetail = (product) => {
     setProduct(product);
@@ -26,16 +34,23 @@ export default function ProductsScreen() {
     setModalProductDetailVisible(false)
   }
   const buyPorduct=async (product)=>{
-    await incrementSalesCount(product.Name);
+    await incrementSalesCount(product.Name,1);
     const user=await getSession();
     addOrderedProduct(user,product);
     setRefreshPage(!refreshPage);
   }
+const addProductToBasket=async (product)=>{
+  const user=await getSession();
+  addBasketProduct(user.UserId,product.ProductId);
+}
+
   return (
     <View>
-      <Text>ProductsScree</Text>
+
       <ProductList onPressProduct={startModalProductDetail}  onRefreshPage={refreshPage}/>
-      <ProductDetail visible={modalProductDetailVisible} product={product} onBuyProduct={buyPorduct} onCancel={endModalProductDetail}  />
+      <ProductDetail visible={modalProductDetailVisible} product={product} onBuyProduct={buyPorduct} onCancel={endModalProductDetail} 
+      onAddProdutToBasket={addProductToBasket}
+      />
     </View>
   )
 }

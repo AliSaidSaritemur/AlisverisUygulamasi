@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList,StyleSheet, TouchableOpacity } from 'react-native';
-import ProductService from '../Services/ProductService';
+import {getProductList} from '../Services/ProductService';
 import ProductImage from './ProductImage';
 import { scale, verticalScale, moderateScale, ScaledSheet } from 'react-native-size-matters';
+import FavoriteHeartIcon from './FavoriteHeartIcon';
 const ProductList = ({onPressProduct,onRefreshPage}) => {
   const [products, setProducts] = useState([]);
-      const [,getProductList]=ProductService();
+      const[heartColor,setHeartColor]=useState("heart-outline");
+
   useEffect(() => {
     const fetchProducts = async () => {
       const productList = await getProductList();
@@ -14,15 +16,21 @@ const ProductList = ({onPressProduct,onRefreshPage}) => {
     fetchProducts();
   }, [onRefreshPage]);
 
+
   const renderItem = ({ item }) => (
-    <TouchableOpacity onPress={()=>onPressProduct(item)}> 
+
     <View style={styles.itemContainer}>
+      <View style={styles.favoriteHeart}>
+         <FavoriteHeartIcon  ProductId={item.ProductId} />
+         </View>
+      <TouchableOpacity onPress={()=>onPressProduct(item)}>
       <ProductImage productName={item.Name} height={verticalScale(80)} width={scale(80)} />
        <Text style={styles.itemName}>{item.Name}</Text>
       <Text style={styles.itemPrice}>Fiyat: {item.Price}₺</Text>
       <Text style={styles.itemSalesCount}>Satış Sayısı: {item.SalesCount}</Text>
+      </TouchableOpacity>
+
     </View>
-    </TouchableOpacity>
 
   );
   
@@ -59,5 +67,11 @@ const styles = ScaledSheet.create({
     fontSize: 12,
     color: '#888',
   },
+  favoriteHeart:{
+    position:"absolute",
+    zIndex:1,
+    right:scale(0),
+    bottom:verticalScale(120)
+  }
 });
 export default ProductList;

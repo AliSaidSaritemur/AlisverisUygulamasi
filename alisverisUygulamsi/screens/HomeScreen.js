@@ -1,15 +1,23 @@
-import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ProductsScreen from './ProductsScreen';
 import ProfileScreen from './ProfileScreen';
-import FavoriteListScreen from './FavoriteListScreen';
+import BasketScreen from './BasketScreen';
+import { removSession } from '../Services/SessionsService';
+import { useFocusEffect } from '@react-navigation/native';
 const personName = "Profil";
 const basketName = "İstek Sepeti";
 const homeName = "Market";
 const Tab = createBottomTabNavigator();
 export default function HomeScreen({ navigation }) {
+  useFocusEffect(
+    React.useCallback(() => {
+      return () => {
+        removSession();
+      };
+    }, [])
+  );
   return (
     <Tab.Navigator
     initialRouteName={homeName}
@@ -35,7 +43,7 @@ export default function HomeScreen({ navigation }) {
   >
     <Tab.Screen name={personName} component={ProfileScreen}  options={{ headerShown: false }} /> 
     <Tab.Screen name={homeName} component={ProductsScreen}   options={{ headerShown: false }}/>
-    <Tab.Screen name={basketName} component={FavoriteListScreen}  options={{ headerShown: false }} />
+    <Tab.Screen name={basketName} component={BasketScreen}  options={{ headerShown: false }} />
   </Tab.Navigator>
 
   );

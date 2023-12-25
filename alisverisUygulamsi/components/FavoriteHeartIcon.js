@@ -1,12 +1,11 @@
-import { StyleSheet, Text, View,TouchableOpacity } from 'react-native'
+import { TouchableOpacity } from 'react-native'
 import React, { useEffect,useState } from 'react'
-import FavoriteProductService from '../Services/FavoriteProductService';
+import {changeFavoriteStatus,getFavoriteStatus} from '../Services/FavoriteProductService';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { scale, verticalScale, moderateScale, ScaledSheet } from 'react-native-size-matters';
+import { scale, ScaledSheet } from 'react-native-size-matters';
 import { getSession } from '../Services/SessionsService'; 
 
 const FavoriteHeartIcon=({ProductId}) => {
-    const  [changeFavoriteStatus,getFavoriteStatus]=FavoriteProductService();
     const[heartColor,setHeartColor]=useState();
     const [user, setUser] = useState();
     useEffect(() => {
@@ -22,7 +21,7 @@ const FavoriteHeartIcon=({ProductId}) => {
       }, []);
 
 const changeHeartColor=()=>{
-    if(heartColor=="black"){
+    if(heartColor!="red"){
         setHeartColor("red");
     }
     else{
@@ -31,8 +30,9 @@ const changeHeartColor=()=>{
 }
 
     const changeFavourite=()=>{
+      changeHeartColor()
         changeFavoriteStatus(user.UserId,ProductId);
-        changeHeartColor()
+
     }
   return (
     <TouchableOpacity style={styles.container} onPress={changeFavourite}>
