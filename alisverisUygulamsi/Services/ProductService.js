@@ -1,11 +1,7 @@
-import { initializeApp } from 'firebase/app';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { StyleSheet, Text, View, ToastAndroid, Platform } from 'react-native'
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import React from 'react'
-import { app, db } from '../fireBase';
-import { useEffect,useState } from 'react';
+import { app,db } from '../fireBase';
 import { getFirestore, collection, addDoc, doc, deleteDoc, getDoc,query,where,getDocs,updateDoc,increment } from 'firebase/firestore';
+
 
 const firestore = getFirestore(app);
 
@@ -20,7 +16,7 @@ export const addProduct = async (name,price,salesCount ) => {
       ProductId: docRef.id,
     });
     if(Platform.OS === "android"){
-      ToastAndroid.show(`Product added`, ToastAndroid.SHORT); 
+      ToastAndroid.show('Product added', ToastAndroid.SHORT); 
     }
   } catch (e) {
     console.error("Error adding document: ", e);
@@ -93,5 +89,16 @@ export const incrementSalesCount = async (name,incCount) => {
     console.log("SalesCount incremented successfully.");
   } catch (error) {
     console.error("Error incrementing SalesCount: ", error);
+  }
+}
+export const updateProduct = async (id, name, price) => {
+  try {
+    const productRef = doc(db, "Products", id);
+    await updateDoc(productRef, { Name: name, Price: price });
+    if(Platform.OS === "android"){
+      ToastAndroid.show('Product updated', ToastAndroid.SHORT); 
+    }
+  } catch (e) {
+    console.error("Error updating document: ", e);
   }
 }

@@ -40,7 +40,7 @@ const styles = ScaledSheet.create({
     flex: 1,
     alignItems: 'center',
     backgroundColor: 'white',
-    padding: 15,
+    padding: 25,
   },
   text: {
     fontSize: 20,
