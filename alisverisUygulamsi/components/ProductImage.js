@@ -20,8 +20,6 @@ export default function ProductImage({productName,width,height}) {
     }, []); 
 
     return (
-        <View>
-             {imageUrl && <Image source={{ uri: imageUrl }} style={{width: width, height: height, borderRadius: 30}} />}
-        </View>
+              <Image source={{ uri: imageUrl }} style={{width: width, height: height, borderRadius: 30}} />
     )
 }

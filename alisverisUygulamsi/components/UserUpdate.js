@@ -1,5 +1,5 @@
 import { Button, KeyboardAvoidingView, Modal, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 export default function UserUpdate({visible,onUpdateUser,onCancel,user}) {
   if(user==null){
@@ -12,8 +12,16 @@ export default function UserUpdate({visible,onUpdateUser,onCancel,user}) {
     const [telNo, setTelNo] = useState(user.TelNo);
     const [adress, setAdress] = useState(user.Adress);
     const [id, setId] = useState(user.UserId);
+    useEffect(() => {
+      setEmail(user.Email);
+      setName(user.Name);
+      setPassword(user.Password);
+      setSurname(user.Surname);
+      setTelNo(user.TelNo);
+      setAdress(user.Adress);
+      setId(user.UserId);
+    }, [user])
     const validateInput = (email, phone, password, name, username) => {
-
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       const nameRegex = /^[A-Za-z\s]+$/;
       const usernameRegex = /^[A-Za-z]+$/;

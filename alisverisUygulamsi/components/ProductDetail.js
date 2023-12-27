@@ -1,4 +1,4 @@
-import { Button, Modal, ScrollView, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { Button, Modal, ScrollView, StyleSheet, Text, View, TouchableOpacity, ActivityIndicator } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import React from 'react'
 import ProductImage from './ProductImage'
@@ -31,7 +31,7 @@ export default function ProductDetail({ product, visible, onBuyProduct, onCancel
   
         </View>
       </Modal>
-      : <Text></Text>
+      :null
   )
 }
 
@@ -40,7 +40,7 @@ const styles = ScaledSheet.create({
     flex: 1,
     alignItems: 'center',
     backgroundColor: 'white',
-    padding: 25,
+    padding: 15,
   },
   text: {
     fontSize: 20,

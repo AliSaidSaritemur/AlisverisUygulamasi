@@ -1,8 +1,9 @@
-import { StyleSheet, Text, View, ToastAndroid, Platform } from 'react-native'
+import {ToastAndroid, Platform } from 'react-native'
 import { app, db } from '../fireBase';
 import { getFirestore, collection, addDoc, doc, deleteDoc, getDoc,query,where,getDocs } from 'firebase/firestore';
 
 const firestore = getFirestore(app);
+
 
 export const getOrderedProductPackageList = async () => {
   try {

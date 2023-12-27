@@ -1,7 +1,6 @@
 import { StyleSheet, Text, View, ToastAndroid, Platform } from 'react-native'
-import { app,db } from '../fireBase';
+import { app, db } from '../fireBase';
 import { getFirestore, collection, addDoc, doc, deleteDoc, getDoc,query,where,getDocs,updateDoc,increment } from 'firebase/firestore';
-
 
 const firestore = getFirestore(app);
 
@@ -16,7 +15,7 @@ export const addProduct = async (name,price,salesCount ) => {
       ProductId: docRef.id,
     });
     if(Platform.OS === "android"){
-      ToastAndroid.show('Product added', ToastAndroid.SHORT); 
+      ToastAndroid.show(`Product added`, ToastAndroid.SHORT); 
     }
   } catch (e) {
     console.error("Error adding document: ", e);
@@ -96,7 +95,7 @@ export const updateProduct = async (id, name, price) => {
     const productRef = doc(db, "Products", id);
     await updateDoc(productRef, { Name: name, Price: price });
     if(Platform.OS === "android"){
-      ToastAndroid.show('Product updated', ToastAndroid.SHORT); 
+      ToastAndroid.show(`Product updated`, ToastAndroid.SHORT); 
     }
   } catch (e) {
     console.error("Error updating document: ", e);

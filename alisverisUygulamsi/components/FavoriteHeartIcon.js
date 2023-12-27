@@ -8,6 +8,7 @@ import { getSession } from '../Services/SessionsService';
 const FavoriteHeartIcon=({ProductId}) => {
     const[heartColor,setHeartColor]=useState();
     const [user, setUser] = useState();
+    const [isProcessing, setIsProcessing] = useState(false);
     useEffect(() => {
         const fetchProducts = async () => {
             const user = await getSession(); 
@@ -29,14 +30,15 @@ const changeHeartColor=()=>{
     }
 }
 
-    const changeFavourite=()=>{
+    const changeFavourite=async ()=>{
+      setIsProcessing(true);
       changeHeartColor()
-        changeFavoriteStatus(user.UserId,ProductId);
-
+      await  changeFavoriteStatus(user.UserId,ProductId);
+        setIsProcessing(false);
     }
   return (
     <TouchableOpacity style={styles.container} onPress={changeFavourite}>
-    <Ionicons name="heart-circle-outline" size={scale(30)} color={heartColor} />
+    <Ionicons name="heart-circle-outline" size={scale(30)} color={heartColor} disabled={isProcessing} />
     </TouchableOpacity>
   )
 }

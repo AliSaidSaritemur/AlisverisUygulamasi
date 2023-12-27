@@ -4,14 +4,13 @@ import UserSingUp from '../components/UserSingUp';
 import { ScaledSheet } from 'react-native-size-matters';
 import { logIn,addUser } from '../Services/UserService';
 import {setSessionWithId,isSessionExist} from '../Services/SessionsService';
-
+//import {YourComponent} from '../util/PushNotifationHelper';
 export default function LoginScreeen ({ navigation })  {
 
   const [email, setEmail ] = useState('');
   const [password, setPassword ] = useState('');
 
   const [modalSignUpIsVisible, setmodalSignUpIsVisible] = useState(false)  
- 
   const startModalSignUp = () => {
     setmodalSignUpIsVisible(true)
   }; 
@@ -22,8 +21,8 @@ export default function LoginScreeen ({ navigation })  {
     const loginUser =await logIn(email, password);
     if(loginUser != null) {
       setSessionWithId(loginUser.id);
+   //   YourComponent();
       if(loginUser.Role == "admin") {
-        console.log("admin giriş yapıldı");
         navigation.navigate('AdminHome');
       } else {
         navigation.navigate('Home');

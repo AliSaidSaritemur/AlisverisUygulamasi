@@ -1,11 +1,11 @@
-import { StyleSheet, Text, View } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getUser} from './UserService';
+
 
 export const setSessionWithId = async (id) => {
   try {
     await AsyncStorage.setItem('userId', id);
-    console.log("Session kaydedildi");
+
   } catch (e) {
     console.error('Error saving user id:', e);
   }
@@ -34,5 +34,18 @@ export const isSessionExist = async () => {
   } catch (e) {
     console.error('Error checking session:', e);
     return false;
+  }
+};
+export const getSessionsRole = async () => {
+  try {
+    const userId = await AsyncStorage.getItem('userId');
+    if(userId === null){
+      return "noSession";
+    }
+    const user = await getUser(userId);
+    return user !=null?user.Role:"noSession" ;
+  } catch (e) {
+    console.error('Error getting session role:', e);
+    return null;
   }
 };

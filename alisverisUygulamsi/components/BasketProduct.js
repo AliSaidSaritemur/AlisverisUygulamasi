@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React,{useState,useEffect} from 'react'
 import ProductImage from './ProductImage'
 import { getProductWithId } from '../Services/ProductService'
@@ -24,7 +24,7 @@ const BasketProduct =({basketProduct,onIsProductRemoved})=> {
     }, [basketProduct,refreshPage]);
 
     if (!product) {
-      return <Text>Loading...</Text>; 
+      return <ActivityIndicator size="large" color="blue" />; 
     }
 
     return (
@@ -35,7 +35,9 @@ const BasketProduct =({basketProduct,onIsProductRemoved})=> {
               <Text style={styles.productInfo} >Ürün Adı:  {product.Name}</Text>
               <Text style={styles.productInfo} >Ürün Fiyatı:  {product.Price}₺</Text>
               <Text style={styles.productInfo} >Ürün adedi:  {basketProduct.Count}</Text>
-              <Text style={styles.productInfo} >Toplam Fiyat:  {product.Price*basketProduct.Count}₺</Text>
+              <Text style={styles.productInfo}>
+  {"Toplam Fiyat: " + (product.Price * basketProduct.Count).toString() + "₺"}
+</Text>
               </View>
               <View style={styles.buttonConatiner}>
 
@@ -43,16 +45,16 @@ const BasketProduct =({basketProduct,onIsProductRemoved})=> {
                 <TouchableOpacity  onPress={() => {basketProduct.Count>1 ?decreaseProductCount(basketProduct.BasketProductId):removeBasketProduct(basketProduct.BasketProductId);
                 refresh();  
                 }}> 
-                           <View style={styles.iconDesc} ><Ionicons name="remove-circle-outline" size={scale(20)} color={"red"} />   
-                                </View>
+        <Ionicons style={styles.iconDesc} name="remove-circle-outline" size={scale(20)} color={"red"} />   
+                              
                 </TouchableOpacity>
 
                 <TouchableOpacity  onPress={() => {increaseProductCount(basketProduct.BasketProductId);
                 refresh();  
                 }}> 
-                <View style={styles.iconInc} >
-                <Ionicons name="add-circle-outline" size={scale(20)}  color={"blue"} /> 
-                </View>
+        
+                <Ionicons style={styles.iconInc} name="add-circle-outline" size={scale(20)}  color={"blue"} /> 
+  
                 </TouchableOpacity>
                 </View>
                 <TouchableOpacity style={styles.removeAllButton} onPress={() => {removeBasketProduct(basketProduct.BasketProductId);

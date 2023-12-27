@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ToastAndroid, Platform } from 'react-native'
+import {  ToastAndroid, Platform } from 'react-native'
 import { app, db } from '../fireBase';
 
 import { getFirestore, collection, addDoc, doc, deleteDoc, getDoc,query,where,getDocs,updateDoc } from 'firebase/firestore';
@@ -6,9 +6,7 @@ import { getFirestore, collection, addDoc, doc, deleteDoc, getDoc,query,where,ge
 
 
 export const deleteUser = async (userId) => {
-  console.log("Deleting user with id: ", userId);
   try {
-    
       await deleteDoc(doc(db, "Users", userId));
       console.log("User deleted");
   } catch (e) {

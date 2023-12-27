@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View,Image, Button,TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View,Image,TouchableOpacity, ActivityIndicator } from 'react-native';
 import UserUpdate from '../components/UserUpdate';
 import LastOrdersUser from '../components/LastOrdersUser';
 import { getSession } from '../Services/SessionsService'; 
 import {updateUser} from '../Services/UserService';
+import FavoriteProductsList from '../components/FavoriteProductsList';
 
 export default function ProfileScreen({ navigation }) {
 
@@ -12,6 +13,8 @@ export default function ProfileScreen({ navigation }) {
   const [modalLastOrdersVisible, setModalLastOrdersVisible] = useState(false)  
   const [updateInfoPressed, setUpdateInfoPressed] = useState(false);
   const [refreshPage,setRefreshPage]=useState(false);
+  const [modalFavoritesVisible, setModalFavoritesVisible] = useState(false)
+  const [refreshPageFavorites,setRefreshPageFavorites]=useState(false);
   useEffect(() => {
     const fetchId = async () => {
       const user = await getSession(); 
@@ -29,6 +32,15 @@ export default function ProfileScreen({ navigation }) {
 const startModalLastOrders = () => {
     setModalLastOrdersVisible(true)
   };
+  const startModalFavorites = () => {
+    setModalFavoritesVisible(true)
+    setRefreshPageFavorites(!refreshPageFavorites);
+  };
+  const endModalFavorites=()=>{
+    setRefreshPage(!refreshPageFavorites);
+    setModalFavoritesVisible(false)
+  };
+
   const endModalLastOrders=()=>{
     setRefreshPage(!refreshPage);
     setModalLastOrdersVisible(false)
@@ -53,14 +65,17 @@ const startModalLastOrders = () => {
   <TouchableOpacity style={styles.button} onPress={startModalLastOrders}>
     <Text style={styles.buttonText}>Geçimiş Siparişlerim</Text>
   </TouchableOpacity>
+  <TouchableOpacity style={styles.button} onPress={startModalFavorites}>
+    <Text style={styles.buttonText}>Favorilerim</Text>
+  </TouchableOpacity>
 </View>
           </View>   
           <UserUpdate visible={modalUpdateIsVisible} onUpdateUser={UpdateUser} onCancel={endModalUpdate} user={user} />
           <LastOrdersUser visible={modalLastOrdersVisible} onCancel={endModalLastOrders} onRefreshPage={refreshPage} />
-
+      <FavoriteProductsList visible={modalFavoritesVisible} onCancel={endModalFavorites} onRefreshPage={refreshPageFavorites} />
       </View>
     :
-      <Text>Loading...</Text>  
+    <ActivityIndicator size="large" color="blue" />
   );
 }
 

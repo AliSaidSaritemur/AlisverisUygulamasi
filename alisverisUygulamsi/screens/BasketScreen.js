@@ -5,6 +5,7 @@ import BasketProduct from '../components/BasketProduct';
 import{getUserBasketTotalPrice,clearUserBasket,getBasketProductListWithUserId} from '../Services/BasketProductService';
 import{addOrderedProducts} from '../Services/OrderedProductService';
 import {incrementSalesCount,getProductWithId} from '../Services/ProductService';
+
 export default function BasketScreen({ navigation }) {
   const [products, setProducts] = useState([]);
   const[user,setUser]=useState(null);
@@ -39,7 +40,6 @@ const productUpdateSalesCount= async (basketProduct) => {
   incrementSalesCount(product.Name,basketProduct.Count);
 }
 
-
   return (
     <View>
         <FlatList
@@ -51,12 +51,11 @@ const productUpdateSalesCount= async (basketProduct) => {
       />
   <View style={styles.paymentContainer}>
     <Text style={styles.totalPrice}>Toplam Fiyat: {totalPrice}</Text>
-    <View style={styles.buttonContainer}>
 
-      <TouchableOpacity style={styles.button} onPress={()=>{payBasket();}}>
+      <TouchableOpacity style={styles.button} onPress={()=>{payBasket()}}>
     <Text style={styles.buttonText} >Ödeme Yap</Text>
     </TouchableOpacity>
-    </View> 
+
   </View>
 
     </View>
@@ -68,13 +67,12 @@ const styles = StyleSheet.create({
     flexDirection:'row',
     alignItems:'center',
     margin: 6,
-    alignItems: 'center',
     backgroundColor: '#00FFA2',
     borderRadius: 30,
     padding: 10,
   },
   totalPrice:{
-
+    flex:13,
     fontSize: 16,
     fontWeight: 'bold',
   },
@@ -85,14 +83,14 @@ const styles = StyleSheet.create({
 
   },
   button:{
-
+    flex:6,
     backgroundColor:'yellow',
     borderRadius: 30,
     padding: 10,
     width:150,
     height:50,
-    marginLeft:115,
     justifyContent:'center',
+    alignSelf: 'flex-end',
   },
   
   

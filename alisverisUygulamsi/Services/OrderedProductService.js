@@ -1,10 +1,6 @@
-import { initializeApp } from 'firebase/app';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-import { StyleSheet, Text, View, ToastAndroid, Platform } from 'react-native'
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import React from 'react'
+
+import {ToastAndroid, Platform } from 'react-native'
 import { app, db } from '../fireBase';
-import { useEffect,useState } from 'react';
 import moment from 'moment';
 import {addOrderedProductPackage} from '../Services/OrderedProductPackageService';
 import { getFirestore, collection, addDoc, doc, deleteDoc, getDoc,query,where,getDocs } from 'firebase/firestore';

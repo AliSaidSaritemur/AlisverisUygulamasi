@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import React,{useState,useEffect} from 'react'
 import ProductList from '../components/ProductList'
 import ProductDetail from '../components/ProductDetail'

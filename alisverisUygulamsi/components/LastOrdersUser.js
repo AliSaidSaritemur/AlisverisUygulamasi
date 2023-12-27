@@ -18,7 +18,8 @@ export default  function LastOrdersUser({visible,onCancel,refreshPage}) {
         setUser(sessionUser);
         if (sessionUser) {
           const userOrders = await getOrderedProducPackagetListWithUserId(sessionUser.UserId);
-          setOrders(userOrders);
+          userOrders.sort((a, b) => new Date(b.Date) - new Date(a.Date));
+        setOrders(userOrders);
         }
       };
     
