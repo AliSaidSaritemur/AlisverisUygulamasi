@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList,StyleSheet, TouchableOpacity } from 'react-native';
-import {getProductList} from '../Services/ProductService';
+import {getProductsInMarket} from '../Services/ProductService';
 import ProductImage from './ProductImage';
 import { scale, verticalScale, moderateScale, ScaledSheet } from 'react-native-size-matters';
 import FavoriteHeartIcon from './FavoriteHeartIcon';
+import {getSessionsRole} from '../Services/SessionsService';
 const ProductList = ({onPressProduct,onRefreshPage}) => {
   const [products, setProducts] = useState([]);
       const[heartColor,setHeartColor]=useState("heart-outline");
-
+      const [role, setRole] = useState("user");
   useEffect(() => {
     const fetchProducts = async () => {
-      const productList = await getProductList();
+      setRole(await getSessionsRole());
+      const productList = await getProductsInMarket();
       setProducts(productList);
     };
     fetchProducts();
@@ -21,7 +23,8 @@ const ProductList = ({onPressProduct,onRefreshPage}) => {
 
     <View style={styles.itemContainer}>
       <View style={styles.favoriteHeart}>
-         <FavoriteHeartIcon  ProductId={item.ProductId} />
+
+      {role!="admin"?<FavoriteHeartIcon  ProductId={item.ProductId} />:null}
          </View>
       <TouchableOpacity onPress={()=>onPressProduct(item)}>
       <ProductImage productName={item.Name} height={verticalScale(80)} width={scale(80)} />

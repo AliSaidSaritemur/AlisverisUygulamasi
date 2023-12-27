@@ -5,18 +5,21 @@ import {getOrderedProductListWithUserId} from '../Services/OrderedProductService
 import { scale } from 'react-native-size-matters';
 import { getProductWithId } from '../Services/ProductService';
 import ProductImage from './ProductImage';
+import { getSessionsRole } from '../Services/SessionsService';
 
 export default  function Receipt({visible,onCancel,user,date}) {
     const [list, setList] = useState([]);
-
+    const [role, setRole] = useState("user");
     const [Isloading,setIsLoading]=useState(false);
     useEffect(() => {
       const fetchOrders = async () => {
+        setRole(await getSessionsRole());
         setIsLoading(true);
-        const orderProductData = await getOrderedProductListWithUserId(user.UserId, date);
+        const orderProductData = await getOrderedProductListWithUserId(user.UserId,date);
         const productDetails = await Promise.all(orderProductData.map(item => getProductWithId(item.ProductId)));
         const mergedProducts = orderProductData.map((orderProduct, index) => {
           const matchingProduct = productDetails[index];
+          console.log(user)
           return { ...matchingProduct, ...orderProduct };
         });
         setList(mergedProducts);
@@ -29,6 +32,9 @@ export default  function Receipt({visible,onCancel,user,date}) {
   <Modal
         animationType="slide"
         visible={visible}>
+<Text style={styles.userMailText}>
+  {(user!=null && role == "admin") ?"Kullanıcı Maili :  " + user.Email : null}
+</Text>
         <FlatList
         data={list}
         renderItem={( {item} ) => (
@@ -73,4 +79,10 @@ productInfo:{
 productInfoContainer:{
   marginLeft: 10,},
 
+  userMailText:{
+    fontSize: 15,
+    fontWeight: 'bold',
+    margin: 10,
+    alignSelf:'center'
+  }
 })

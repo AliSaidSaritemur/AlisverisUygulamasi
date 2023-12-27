@@ -3,12 +3,14 @@ import { StyleSheet,StatusBar,FlatList, Text, View,Image, Button,TouchableOpacit
 import AdminProductDetail from '../components/AdminProductDetail'
 import ProductList from '../components/ProductList'
 import AddProduct from '../components/AddProduct'
+import ProductsNotInMarket from '../components/ProductsNotInMarket'
 
 export default function AdminProductsScreen({ navigation }) {
   const [product, setProduct] = useState(null);
   const [modalAdminProductDetailVisible,setModalProductDetailVisible]=useState(false);
   const[refreshPage,setRefreshPage]=useState(false);
   const[modalAddProductIsVisible,setModalAddProductVisible]=useState(false);
+  const[modalAddProductInMarketIsVisible,setModalAddProductInMarketVisible]=useState(false);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -19,6 +21,7 @@ export default function AdminProductsScreen({ navigation }) {
     });
   
   }, [navigation,refreshPage]);
+
 
   const startModalAdminProductDetail=(product)=>{
     setProduct(product);
@@ -36,7 +39,13 @@ export default function AdminProductsScreen({ navigation }) {
     setRefreshPage(!refreshPage);
     setModalAddProductVisible(false);
   };
-
+const startModalProductsNotInMarket=()=>{
+  setModalAddProductInMarketVisible(true);
+}
+const endModalProductsNotInMarket=()=>{
+  setRefreshPage(!refreshPage);
+  setModalAddProductInMarketVisible(false);
+}
 
 
   return (
@@ -44,10 +53,14 @@ export default function AdminProductsScreen({ navigation }) {
       <ProductList onPressProduct={startModalAdminProductDetail} onRefreshPage={refreshPage}/>
       <AdminProductDetail visible={modalAdminProductDetailVisible} product={product} onCancel={endModalAdminProductDetail}/>
      
+      <TouchableOpacity style={styles.button} onPress={()=>startModalProductsNotInMarket()}>
+        <Text style={styles.buttonText}>Satışta Olamayn Ürünler</Text>
+      </TouchableOpacity>  
       <TouchableOpacity style={styles.button} onPress={()=>startModalAddProduct()}>
         <Text style={styles.buttonText}>Ürün Ekle</Text>
       </TouchableOpacity>  
       <AddProduct visible={modalAddProductIsVisible} onCancel={endModalAddProduct}/>
+      <ProductsNotInMarket  visible={modalAddProductInMarketIsVisible} onCancel={endModalProductsNotInMarket}/>
     </View>
   )
 }

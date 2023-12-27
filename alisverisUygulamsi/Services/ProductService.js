@@ -10,6 +10,7 @@ export const addProduct = async (name,price ) => {
       Name: name,
       Price: price,
       SalesCount: 0,
+      IsInMarket: true,
     });
     await updateDoc(doc(db, "Products", docRef.id), {
       ProductId: docRef.id,
@@ -119,5 +120,44 @@ export const deleteProduct = async (id) => {
     }
   } catch (e) {
     console.error("Error deleting document: ", e);
+  }
+}
+export const getProductsInMarket = async () => {
+  try {
+    const q = query(collection(db, "Products"), where("IsInMarket", "==", true));
+    const querySnapshot = await getDocs(q);
+    const productsInMarket = querySnapshot.docs.map(doc => doc.data());
+    return productsInMarket;
+  } catch (error) {
+    console.error("Error fetching products in market: ", error);
+  }
+}
+export const getProductsNotInMarket = async () => {
+  try {
+    const q = query(collection(db, "Products"), where("IsInMarket", "==", false));
+    const querySnapshot = await getDocs(q);
+    const productsInMarket = querySnapshot.docs.map(doc => doc.data());
+    return productsInMarket;
+  } catch (error) {
+    console.error("Error fetching products in market: ", error);
+  }
+}
+
+export const changeIsInMarketValue = async (productId) => {
+  try {
+    const productRef = doc(db, "Products", productId);
+    const productSnap = await getDoc(productRef);
+
+    if (productSnap.exists()) {
+      const productData = productSnap.data();
+      const currentIsInMarketValue = productData.IsInMarket;
+      await updateDoc(productRef, {
+        IsInMarket: !currentIsInMarketValue
+      });
+    } else {
+      console.log(`No product found with id: ${productId}`);
+    }
+  } catch (error) {
+    console.error("Error updating product: ", error);
   }
 }

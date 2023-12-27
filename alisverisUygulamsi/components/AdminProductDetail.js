@@ -70,7 +70,6 @@ const styles = ScaledSheet.create({
         flex: 1,
         alignItems: 'center',
         padding: 15,
-        margin: 10,
         backgroundColor: '#E0FFFF',
       },
       text: {
@@ -88,7 +87,7 @@ const styles = ScaledSheet.create({
         alignItems: 'center',
         textAlign: 'center',
         borderRadius: 5,
-        marginTop: 60,
+        marginVertical: 20,
         backgroundColor: '#FFF',
       },
       buttonContainer: {
