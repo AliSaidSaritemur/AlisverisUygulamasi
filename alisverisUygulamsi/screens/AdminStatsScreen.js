@@ -4,7 +4,11 @@ import React from 'react'
 export default function AdminStatsScreen() {
   return (
     <View>
-      <Text>AdminStatsScreen</Text>
+      <View style={{flexDirection:"row"}}></View>
+        
+
+
+
     </View>
   )
 }

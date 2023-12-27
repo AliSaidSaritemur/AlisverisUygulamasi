@@ -101,3 +101,23 @@ export const updateProduct = async (id, name, price) => {
     console.error("Error updating document: ", e);
   }
 }
+
+export const getTotalSalesCount = async () => {
+  try {
+    const querySnapshot = await getDocs(collection(db, "Products"));
+    const totalSalesCount = querySnapshot.docs.reduce((total, doc) => total + doc.data().SalesCount, 0);
+    return totalSalesCount;
+  } catch (error) {
+    console.error("Error fetching product list: ", error);
+  }
+};
+export const deleteProduct = async (id) => {
+  try {
+    await deleteDoc(doc(db, "Products", id));
+    if(Platform.OS === "android"){
+      ToastAndroid.show(`Product deleted`, ToastAndroid.SHORT); 
+    }
+  } catch (e) {
+    console.error("Error deleting document: ", e);
+  }
+}

@@ -5,8 +5,9 @@ import ProductImage from './ProductImage'
 import { scale, verticalScale, moderateScale, ScaledSheet } from 'react-native-size-matters';
 import { useState } from 'react';
 import { updateProduct } from '../Services/ProductService';
+import { deleteProduct } from '../Services/ProductService';
 
-export default function AdminProductDetail({product, visible,onDeleteProduct,onCancel}) {
+export default function AdminProductDetail({product, visible,onCancel}) {
   if(product==null){
     return null
   }
@@ -39,7 +40,7 @@ export default function AdminProductDetail({product, visible,onDeleteProduct,onC
                 <TouchableOpacity style={styles.button} onPress={() => updateProduct(product.ProductId,product.Name,price)}>
                     <Text style={styles.buttonText}>Güncelle</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() => onDeleteProduct(product)}>
+                <TouchableOpacity style={styles.button} onPress={() =>{ deleteProduct(product.ProductId);onCancel();}}>
                     <Text style={styles.buttonText}>Sil</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.button} onPress={onCancel}>

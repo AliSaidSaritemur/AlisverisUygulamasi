@@ -71,6 +71,14 @@ const[base64Image,setBase64Image]=useState(null);
     uploadImagesToFirebase(name);
     addProduct(name,price);
   }
+const closePage=()=>{
+  onCancel();
+  setImage(null);
+  setName('');
+  setPrice(0);
+
+}
+
 
   return (
     visible ?
@@ -101,7 +109,7 @@ const[base64Image,setBase64Image]=useState(null);
           {uploading && <Text>Yükleniyor...</Text>}
         </View>
         <View style={styles.button}>
-          <Button title="Kapat" onPress={onCancel} />
+          <Button title="Kapat" onPress={closePage} />
         </View>
        </View>
 
@@ -141,6 +149,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   uploadBtn: {
+    color: 'white',
     backgroundColor: '#5246f2',
     width: '90%',
     height: 50,

@@ -40,4 +40,13 @@ export const getOrderedProducPackagetListWithUserId = async (userId) => {
       console.error("Error fetching ordered product  list: ", error);
   }
 };
-
+export const getTotalRevenue = async () => {
+  try {
+    const q = query(collection(db, "OrderedProductPackage"));
+    const querySnapshot = await getDocs(q);
+    const totalRevenue = querySnapshot.docs.reduce((total, doc) => total + doc.data().totalPrice, 0);
+    return totalRevenue;
+  } catch (error) {
+    console.error("Error fetching ordered product list: ", error);
+  }
+};
