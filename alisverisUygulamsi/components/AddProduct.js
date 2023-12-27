@@ -8,6 +8,9 @@ import {uploadImage} from './ProductImage';
 import 'react-native-get-random-values';
 import 'react-native-url-polyfill/auto';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { TouchableOpacity } from 'react-native'
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { scale, verticalScale, moderateScale, ScaledSheet } from 'react-native-size-matters';
 
 
 export default function AddProduct({visible,onCancel}) {
@@ -48,7 +51,6 @@ const[base64Image,setBase64Image]=useState(null);
       aspect: [4, 3],
       quality: 1,
     });
-    //uploadImage(result.uri,"gofret");
 
     if (!result.canceled) {
       setImage(result.assets[0].uri);
@@ -61,13 +63,15 @@ const[base64Image,setBase64Image]=useState(null);
     const base64 = await FileSystem.readAsStringAsync(imageUri, {
       encoding: FileSystem.EncodingType.Base64,
     });
-  
-    // The base64 string is in the format of 'data:image/jpeg;base64,{base64}' 
     const base64WithPrefix = `data:image/jpeg;base64,${base64}`;
   
     return base64WithPrefix;
   }
   const UploadProduct = async () => {
+    if (!name || !price ||!image) {
+      alert('Ürün adı, fiyat veya resim eksik. Lütfen kontrol edip tekrar deneyiniz.');
+      return;
+    }
     uploadImagesToFirebase(name);
     addProduct(name,price);
   }
@@ -76,7 +80,7 @@ const closePage=()=>{
   setImage(null);
   setName('');
   setPrice(0);
-
+  setBase64Image(null);
 }
 
 
@@ -102,14 +106,20 @@ const closePage=()=>{
             onChangeText={text => setPrice(text)}
           />
         <View style={styles.pickBtn}>
-          <Button title="Resim Seç"  onPress={pickImage} />
+          <TouchableOpacity style={styles.button} onPress={pickImage}>
+            <Text style={styles.buttonText}>Resim Seç</Text>
+          </TouchableOpacity> 
         </View>
         <View style={styles.uploadBtn}>
-          <Button title="Yükle" style={styles.uploadBtn} onPress={UploadProduct} disabled={uploading} />
+          <TouchableOpacity  onPress={UploadProduct} disabled={uploading} >
+          <Text style={styles.buttonText}> Ürün Ekle</Text>
           {uploading && <Text>Yükleniyor...</Text>}
+          </TouchableOpacity> 
         </View>
-        <View style={styles.button}>
-          <Button title="Kapat" onPress={closePage} />
+        <View style={styles.closeBttn}>
+          <TouchableOpacity  onPress={closePage}>
+            <Ionicons name='close-circle-outline' size={scale(50)} color='#000' />
+          </TouchableOpacity>
         </View>
        </View>
 
@@ -137,6 +147,11 @@ const styles = StyleSheet.create({
     paddingRight: 20,
     marginTop: 30,
     alignSelf: 'center',
+    borderWidth: 2, 
+    borderColor: 'black', 
+    alignItems: 'center',
+    textAlign: 'center',
+    borderRadius: 5,
   },
   pickBtn: {
     width: '90%',
@@ -147,10 +162,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 20,
+    backgroundColor: '#32CD32',
   },
   uploadBtn: {
     color: 'white',
-    backgroundColor: '#5246f2',
+    backgroundColor: '#40E0D0',
     width: '90%',
     height: 50,
     borderRadius: 10,
@@ -159,5 +175,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 70,
+  },
+  closeBttn:{
+    alignItems: 'center',
+    padding: 10,
+    margin: 10,
+    borderRadius: 5,
+  },
+  buttonText:{
+    fontSize: 18,
+    color: '#000',
+    textAlign: 'center',
   }
 });

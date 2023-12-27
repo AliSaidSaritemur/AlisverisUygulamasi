@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { updateProduct } from '../Services/ProductService';
 import { deleteProduct } from '../Services/ProductService';
 
+
 export default function AdminProductDetail({product, visible,onCancel}) {
   if(product==null){
     return null
@@ -25,29 +26,36 @@ export default function AdminProductDetail({product, visible,onCancel}) {
         animationType="slide"
         visible={visible}>
             <View style={styles.container}>
+              <View style={styles.borderContainer}>
                 <ProductImage productName={product.Name} width={300} height={300} />
-                <Text style={styles.text}>Ürün Adı:    {product.Name}</Text>
-                <TextInput
-                 style={styles.text}
-                 value={price.toString()} 
-                onChangeText={(text) => {
-                setPrice(parseFloat(text)) 
-                }}
-                placeholder='Ürün Fiyatını Giriniz!'
-                />
-
+                <Text style={styles.text}>Ürün Adı:  {product.Name}</Text>
+                <View style={styles.priceContainer}>
+                  <Text style={styles.text}>Ürün Fiyatı: </Text>
+                  <TextInput
+                  style={styles.input}
+                  keyboardType='numeric'
+                  maxLength={10}
+                  value={price.toString()} 
+                  onChangeText={(text) => {
+                  setPrice(parseFloat(text)) 
+                  }}
+                  placeholder='Ürün Fiyatını Giriniz!'
+                  />
+                </View>
                 <View style={styles.buttonContainer}>
                 <TouchableOpacity style={styles.button} onPress={() => updateProduct(product.ProductId,product.Name,price)}>
                     <Text style={styles.buttonText}>Güncelle</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() =>{ deleteProduct(product.ProductId);onCancel();}}>
-                    <Text style={styles.buttonText}>Sil</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={onCancel}>
-                    <Text style={styles.buttonText}>Kapat</Text>
-                </TouchableOpacity>
+                <TouchableOpacity style={styles.deleteBttn} onPress={() =>{ deleteProduct(product.ProductId);onCancel();}}>
+                    <Text style={styles.buttonText} >Sil</Text>
+                   </TouchableOpacity>
                 </View>
-            
+                <View style={{margin:10}}>
+                <TouchableOpacity style={styles.closeBttn} onPress={onCancel}>
+                    <Ionicons name='close-circle-outline' size={scale(50)} color='#000' />
+                </TouchableOpacity> 
+                </View>
+              </View>
             
             
             </View>
@@ -61,23 +69,52 @@ const styles = ScaledSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        backgroundColor: 'white',
         padding: 15,
+        margin: 10,
+        backgroundColor: '#E0FFFF',
       },
       text: {
         fontSize: 20,
         fontWeight: 'bold',
         margin: 10,
       },
+      priceContainer:{
+        flexDirection: 'row',
+        alignItems: 'center',
+      },
+      borderContainer:{
+        borderWidth: 2, 
+        borderColor: 'black', 
+        alignItems: 'center',
+        textAlign: 'center',
+        borderRadius: 5,
+        marginTop: 60,
+        backgroundColor: '#FFF',
+      },
       buttonContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
+        backfaceVisibility: 'hidden',
         width: '50%',
         margin: 10,
       },
       button: {
         alignItems: 'center',
-        backgroundColor: '#808000',
+        backgroundColor: '#00fa9a',
+        padding: 10,
+        margin: 10,
+        borderRadius: 5,
+      },
+      deleteBttn:{
+        alignItems: 'center',
+        backgroundColor: 'red',
+        paddingHorizontal:'',
+        padding: 10,
+        margin: 10,
+        borderRadius: 5,
+      },
+      closeBttn:{
+        alignItems: 'center',
         padding: 10,
         margin: 10,
         borderRadius: 5,
@@ -85,5 +122,11 @@ const styles = ScaledSheet.create({
       buttonText: {
         fontSize: 18,
         color: '#000',
+        textAlign: 'center',
       },
+      input:{
+        fontSize: 18,
+        width: '10%',
+        fontWeight: 'bold',
+      }
 })

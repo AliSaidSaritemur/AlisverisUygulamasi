@@ -49,13 +49,15 @@ export default function AdminUsersScreen({ navigation }) {
     return (
       <View style={styles.item}>
         <Text>{title.Email}</Text>
+        <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={()=> startModalUpdate(user)}>
-        <Text>Düzenle</Text>
-      </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={()=> {deleteUser(title.UserId);
-                                                                setRefreshPage(!refreshPage);}}>
-            <Text>Sil</Text>
+        <Text style={styles.text}>Düzenle</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={styles.delButton} onPress={()=> {deleteUser(title.UserId);
+                                                                setRefreshPage(!refreshPage);}}>
+            <Text style={styles.delText} >Sil</Text>
+        </TouchableOpacity>
+        </View>
       </View>
     );
   };
@@ -80,20 +82,44 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20, 
     marginTop: StatusBar.currentHeight || 0,
   },
-  button: {
-   fontSize:35,
-    width:75,
-    backgroundColor: '#0000FF',
-    padding: 5,
-    borderRadius:50,   
-  },
   item: {
-    backgroundColor: '#40e0d0',
+    borderRadius: 10,
     padding: 20,
     marginVertical: 8,
     marginHorizontal: 16,
+    borderWidth: 2, 
+    borderColor: 'black',
+    backgroundColor: '#E0FFFF',
   },
-  title: {
-    fontSize: 32,
+  buttonContainer:{
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backfaceVisibility: 'hidden',
+    width: '50%',
   },
+  button: {
+   fontSize:35,
+    width:100,
+    backgroundColor: '#02D8E9',
+    padding: 5,
+    borderRadius:50,  
+    margin:20,  
+  },
+  delButton: {
+    fontSize:35,
+     width:100,
+     backgroundColor: 'red',
+     padding: 5,
+     borderRadius:50, 
+     margin:20,  
+   },
+  text: {
+    fontSize: 18,
+    textAlign: 'center',
+  },
+  delText: {
+    fontSize: 18,
+    textAlign: 'center',
+    color: "white",
+  }
 });

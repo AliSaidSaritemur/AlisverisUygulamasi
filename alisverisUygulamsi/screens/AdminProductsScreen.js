@@ -60,15 +60,17 @@ const styles = StyleSheet.create({
     justifyContent:'center'
   },
   button: {
-    backgroundColor: '#0085CA',
+    backgroundColor: 'mediumspringgreen',
     padding: 10,
     margin: 10,
     alignContent:'center',
+    borderRadius: 10,
+    alignSelf: 'center',
+    width: '80%',
   },
   buttonText: {
-    fontSize: 18,
+    fontSize: 24,
     color: '#000',
-    alignContent:'center',
-    justifyContent:'center',
+    textAlign: 'center',
   }
 })

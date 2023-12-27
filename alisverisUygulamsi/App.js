@@ -48,7 +48,7 @@ const [role,setRole]=useState(1);
   return (
     !Isloading ?
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerStyle:{backgroundColor:"green"}}}  initialRouteName={ initialRoute} >
+      <Stack.Navigator screenOptions={{headerStyle:{backgroundColor:"#00fa9a"}}}  initialRouteName={ initialRoute} >
       <Stack.Screen name="Login" component={LoginScreen}  options={{ headerShown: false }} />
       <Stack.Screen name="Products" component={ProductsScreen}  options={{ headerShown: false }}/>
       <Stack.Screen
@@ -61,7 +61,7 @@ const [role,setRole]=useState(1);
     headerRight: () => (
         <TouchableOpacity onPress={() => {navigation.navigate('Login'); removSession();
         }}>
-      <Ionicons name="log-out-outline"size={30} color={"black"} />
+      <Ionicons name="log-out-outline"size={30} color={"white"} />
       </TouchableOpacity>
 
     ),
@@ -76,7 +76,7 @@ const [role,setRole]=useState(1);
     headerRight: () => (
         <TouchableOpacity onPress={() => {navigation.navigate('Login'); removSession();
         }}>
-    <Ionicons name="log-out-outline" size={scale(30)}  />
+    <Ionicons name="log-out-outline" size={scale(30)}  color={"white"}  />
       </TouchableOpacity>
 
     ),

@@ -32,7 +32,7 @@ export default function HomeScreen({ navigation }) {
   
         return <Ionicons name={iconName} size={size} color={color} />;
       },
-      tabBarActiveTintColor: 'tomato',
+      tabBarActiveTintColor: 'green',
       tabBarInactiveTintColor: 'grey',
       tabBarLabelStyle: { paddingBottom: 10, fontSize: 10 },
       tabBarStyle: { padding: 10, height: 70 }

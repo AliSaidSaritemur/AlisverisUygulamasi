@@ -28,7 +28,7 @@ export default function AdminHomeScreen({ navigation }) {
     
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: 'tomato',
+        tabBarActiveTintColor: '#00fa9a',
         tabBarInactiveTintColor: 'grey',
         tabBarLabelStyle: { paddingBottom: 10, fontSize: 10 },
         tabBarStyle: { padding: 10, height: 70 }
