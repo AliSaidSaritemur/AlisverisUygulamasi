@@ -4,12 +4,12 @@ import { getFirestore, collection, addDoc, doc, deleteDoc, getDoc,query,where,ge
 
 const firestore = getFirestore(app);
 
-export const addProduct = async (name,price,salesCount ) => {
+export const addProduct = async (name,price ) => {
   try {
     const docRef =await addDoc(collection(db, "Products"), {
       Name: name,
       Price: price,
-      SalesCount: salesCount,
+      SalesCount: 0,
     });
     await updateDoc(doc(db, "Products", docRef.id), {
       ProductId: docRef.id,

@@ -2,7 +2,7 @@ import firebase from "firebase/compat/app";
 import 'firebase/compat/auth';
 import { getFirestore } from 'firebase/firestore';
 import { initializeApp } from 'firebase/app';
-import { getStorage, ref, getDownloadURL } from 'firebase/storage';
+import { getStorage, ref, getDownloadURL,uploadBytes } from 'firebase/storage';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBQgde81tV7sOWpE99yGv-SosKebCbugWs",
@@ -24,4 +24,4 @@ if (!firebase.apps.length) {
 
 const auth = firebase.auth();
 
-export { app, db, storage, getDownloadURL, ref }; // storage ve getDownloadURL ekleniyor
+export { app, db, storage, getDownloadURL, ref,uploadBytes, }; // storage ve getDownloadURL ekleniyor

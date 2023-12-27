@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, Image } from 'react-native'
 import React, { useState, useEffect } from 'react'
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { getStorage, ref, getDownloadURL,uploadString } from "firebase/storage";
 import { storage } from '../fireBase';
 
 export default function ProductImage({productName,width,height}) {
@@ -22,4 +22,9 @@ export default function ProductImage({productName,width,height}) {
     return (
               <Image source={{ uri: imageUrl }} style={{width: width, height: height, borderRadius: 30}} />
     )
+}
+
+export async function uploadImage(imageBase64, filename) {
+
+  
 }
