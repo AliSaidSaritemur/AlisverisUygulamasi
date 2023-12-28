@@ -1,10 +1,11 @@
-import { FlatList, StyleSheet, Text, Touchable, View, TouchableOpacity } from 'react-native'
+import { FlatList, StyleSheet, Text, Touchable, View, TouchableOpacity,ToastAndroid,Platform, ScrollView  } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { getSession } from '../Services/SessionsService';
 import BasketProduct from '../components/BasketProduct';
 import { getUserBasketTotalPrice, clearUserBasket, getBasketProductListWithUserId } from '../Services/BasketProductService';
 import { addOrderedProducts } from '../Services/OrderedProductService';
 import { incrementSalesCount, getProductWithId } from '../Services/ProductService';
+
 
 export default function BasketScreen({ navigation }) {
   const [products, setProducts] = useState([]);
@@ -28,7 +29,9 @@ export default function BasketScreen({ navigation }) {
   const payBasket = async () => {
 
     if (products == null || products.length == 0) {
-      alert("Sepetinizde ürün bulunmamaktadır.");
+      if(Platform.OS === "android"){
+        ToastAndroid.show("Sepetinizde Ürün Bulunmamaktadır.", ToastAndroid.SHORT); 
+      }
       return;
     }
 
@@ -40,7 +43,9 @@ export default function BasketScreen({ navigation }) {
     setProducts([]);
     setTotalPrice(0);
     setIsProductRemoved(isProductRemoved + 1);
-    alert("Ödeme işleminiz başarıyla gerçekleşmiştir.");
+    if(Platform.OS === "android"){
+      ToastAndroid.show("Ödeme Başarılı.", ToastAndroid.SHORT); 
+    }
   }
   const productUpdateSalesCount = async (basketProduct) => {
     const product = await getProductWithId(basketProduct.ProductId);
@@ -48,13 +53,15 @@ export default function BasketScreen({ navigation }) {
   }
 
   return (
-    <View>
-      <FlatList
+    
+    <View style={styles.container}>
+      <FlatList 
         data={products}
         renderItem={({ item }) =>
         (
           <BasketProduct basketProduct={item} onIsProductRemoved={setIsProductRemoved} />
         )}
+        scrollEnabled={true}
       />
       <View style={styles.paymentContainer}>
         <Text style={styles.totalPrice}>Toplam Fiyat: {totalPrice}</Text>
@@ -64,12 +71,16 @@ export default function BasketScreen({ navigation }) {
         </TouchableOpacity>
 
       </View>
+      
 
     </View>
   )
 }
 
 const styles = StyleSheet.create({
+  container:{
+    flex: 1,
+  },
   paymentContainer: {
     flexDirection: 'row',
     alignItems: 'center',

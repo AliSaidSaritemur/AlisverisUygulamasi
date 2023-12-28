@@ -1,6 +1,8 @@
-import { Button, KeyboardAvoidingView, Modal, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
+import { Button, KeyboardAvoidingView, Modal, ScrollView, StyleSheet, Text, TextInput, View,ToastAndroid,Platform } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { getUserByEmail } from '../Services/UserService';
+
+
 export default function UserUpdate({ visible, onUpdateUser, onCancel, user }) {
   if (user == null) {
     return null
@@ -63,11 +65,15 @@ export default function UserUpdate({ visible, onUpdateUser, onCancel, user }) {
 
     if (isValid) {
       onUpdateUser(id, email, name, password, surname, telNo, adress);
-      alert("Kullanıcı Bilgileri Güncellendi");
+      if(Platform.OS === "android"){
+        ToastAndroid.show("Kullanıcı Bilgileri Güncellendi", ToastAndroid.SHORT); 
+      }
       onCancel();
     }
     else {
-      alert(message);
+      if(Platform.OS === "android"){
+        ToastAndroid.show(message, ToastAndroid.SHORT); 
+      }
     }
 
   }

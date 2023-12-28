@@ -32,7 +32,7 @@ export default function Receipt({ visible, onCancel, user, date }) {
       animationType="slide"
       visible={visible}>
       <Text style={styles.userMailText}>
-        {(user != null && role == "admin") ? "Kullanıcı Maili :  " + user.Email : null}
+      {(user != null && role == "admin") ? "Kullanıcı Maili :  " + user.Email : "Geçmiş Sipariş"}
       </Text>
       {isLoading ? (
     <ActivityIndicator size="large" color="blue" />
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#00fa9a',
   },
   userMailText: {
-    fontSize: 15,
+    fontSize: 25,
     fontWeight: 'bold',
     margin: 10,
     alignSelf: 'center'

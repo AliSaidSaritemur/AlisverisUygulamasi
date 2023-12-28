@@ -72,7 +72,7 @@ export default function AddProduct({ visible, onCancel }) {
       alert('Ürün adı, fiyat veya resim eksik. Lütfen kontrol edip tekrar deneyiniz.');
       return;
     }
-    else if (getIdByName(name) != null) {
+    else if (await getIdByName(name) != null) {
       alert('Bu isimde bir ürün zaten var. Lütfen farklı bir isim giriniz.');
       return;
     }

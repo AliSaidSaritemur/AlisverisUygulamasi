@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View,Platform,ToastAndroid } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import ProductList from '../components/ProductList'
 import ProductDetail from '../components/ProductDetail'
@@ -38,12 +38,16 @@ export default function ProductsScreen({ navigation }) {
     const user = await getSession();
     addOrderedProduct(user, product);
     setRefreshPage(!refreshPage);
-    alert("Ürün satın alındı.");
+    if(Platform.OS === "android"){
+      ToastAndroid.show("Ürün satın alındı.", ToastAndroid.SHORT); 
+    }
   }
   const addProductToBasket = async (product) => {
     const user = await getSession();
     addBasketProduct(user.UserId, product.ProductId);
-    alert("Ürün sepete eklendi.");
+    if(Platform.OS === "android"){
+      ToastAndroid.show("Ürün sepete eklendi.", ToastAndroid.SHORT);
+    }
   }
 
   return (
