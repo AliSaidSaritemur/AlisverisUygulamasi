@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {getUser} from './UserService';
+import { getUser } from './UserService';
 
 
 export const setSessionWithId = async (id) => {
@@ -21,7 +21,7 @@ export const removSession = async () => {
 export const getSession = async () => {
   try {
     const userId = await AsyncStorage.getItem('userId');
-    return   getUser(userId);
+    return getUser(userId);
   } catch (e) {
     console.error('Error getting user id:', e);
   }
@@ -39,11 +39,11 @@ export const isSessionExist = async () => {
 export const getSessionsRole = async () => {
   try {
     const userId = await AsyncStorage.getItem('userId');
-    if(userId === null){
+    if (userId === null) {
       return "noSession";
     }
     const user = await getUser(userId);
-    return user !=null?user.Role:"noSession" ;
+    return user != null ? user.Role : "noSession";
   } catch (e) {
     console.error('Error getting session role:', e);
     return null;

@@ -1,43 +1,46 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList,StyleSheet, TouchableOpacity, Modal, Button } from 'react-native';
-import {getProductList} from '../Services/ProductService';
+import { View, Text, FlatList, TouchableOpacity, Modal, ActivityIndicator } from 'react-native';
+import { getProductList } from '../Services/ProductService';
 import ProductImage from './ProductImage';
 import { scale, verticalScale, moderateScale, ScaledSheet } from 'react-native-size-matters';
-import {getFavoriteProductList} from '../Services/FavoriteProductService';
+import { getFavoriteProductList } from '../Services/FavoriteProductService';
 import FavoriteHeartIcon from './FavoriteHeartIcon';
 import { getProductWithId } from '../Services/ProductService';
 import ProductDetail from './ProductDetail';
-const FavoriteProductsList = ({visible,onCancel,onRefreshPage}) => {
-const [products, setProducts] = useState([]);
-const [productList,setProductList]=useState([]);
-const [modalProductDetailVisible, setModalProductDetailVisible] = useState(false);
-const [detailedProduct, setDetailedProduct] = useState(null);
+const FavoriteProductsList = ({ visible, onCancel, onRefreshPage }) => {
+  const [products, setProducts] = useState([]);
+  const [productList, setProductList] = useState([]);
+  const [modalProductDetailVisible, setModalProductDetailVisible] = useState(false);
+  const [detailedProduct, setDetailedProduct] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  
   useEffect(() => {
     const fetchProducts = async () => {
+      setIsLoading(true);
       const favoriteProductList = await getFavoriteProductList();
-      console.log(favoriteProductList);
-      setProductList( await Promise.all(favoriteProductList.map(item => getProductWithId(item.ProductId))));
+      setProductList(await Promise.all(favoriteProductList.map(item => getProductWithId(item.ProductId))));
       setProducts(productList);
+      setIsLoading(false);
     };
     fetchProducts();
   }, [onRefreshPage]);
-  const buyPorduct=async (product)=>{
-    await incrementSalesCount(product.Name,1);
-    const user=await getSession();
-    addOrderedProduct(user,product);
+  const buyPorduct = async (product) => {
+    await incrementSalesCount(product.Name, 1);
+    const user = await getSession();
+    addOrderedProduct(user, product);
     setRefreshPage(!refreshPage);
   }
-  const addProductToBasket=async (product)=>{
-    const user=await getSession();
-    addBasketProduct(user.UserId,product.ProductId);
+  const addProductToBasket = async (product) => {
+    const user = await getSession();
+    addBasketProduct(user.UserId, product.ProductId);
   }
 
   const startModalProductDetail = (detailedProduct) => {
     setDetailedProduct(detailedProduct);
     setModalProductDetailVisible(true)
-  }; 
-  
-  const endModalProductDetail=()=>{
+  };
+
+  const endModalProductDetail = () => {
     setModalProductDetailVisible(false)
   }
 
@@ -45,37 +48,42 @@ const [detailedProduct, setDetailedProduct] = useState(null);
 
     <View style={styles.itemContainer}>
       <View style={styles.favoriteHeart}>
-         <FavoriteHeartIcon  ProductId={item.ProductId} />
-         </View>
-      <TouchableOpacity onPress={()=>startModalProductDetail(item)}>
-      <ProductImage productName={item.Name} height={verticalScale(80)} width={scale(80)} />
-       <Text style={styles.itemName}>{item.Name}</Text>
-      <Text style={styles.itemPrice}>Fiyat: {item.Price}₺</Text>
-      <Text style={styles.itemSalesCount}>Satış Sayısı: {item.SalesCount}</Text>
+        <FavoriteHeartIcon ProductId={item.ProductId} />
+      </View>
+      <TouchableOpacity onPress={() => startModalProductDetail(item)}>
+        <ProductImage productName={item.Name} height={verticalScale(80)} width={scale(80)} />
+        <Text style={styles.itemName}>{item.Name}</Text>
+        <Text style={styles.itemPrice}>Fiyat: {item.Price}₺</Text>
+        <Text style={styles.itemSalesCount}>Satış Sayısı: {item.SalesCount}</Text>
       </TouchableOpacity>
 
     </View>
 
   );
-  
+
   return (
     <Modal
-    animationType="slide"
-        visible={visible}
+      animationType="slide"
+      visible={visible}
     >
-<FlatList
-      data={productList}
-      renderItem={renderItem}
-      keyExtractor={item => item.ProductId}
-      numColumns={2}
-      contentContainerStyle={styles.listContainer}
-    />
-     <ProductDetail visible={modalProductDetailVisible} product={detailedProduct} onBuyProduct={buyPorduct} onCancel={endModalProductDetail} 
-      onAddProdutToBasket={addProductToBasket}
+      <Text style={styles.title}>Favori Ürünlerim</Text>  
+       {isLoading ? (
+        <ActivityIndicator size="large" color="blue" />
+      ) : (
+        <FlatList
+          data={productList}
+          renderItem={renderItem}
+          keyExtractor={item => item.ProductId}
+          numColumns={2}
+          contentContainerStyle={styles.listContainer}
+        />
+      )}
+      <ProductDetail visible={modalProductDetailVisible} product={detailedProduct} onBuyProduct={buyPorduct} onCancel={endModalProductDetail}
+        onAddProdutToBasket={addProductToBasket}
       />
-          <TouchableOpacity style={styles.button} onPress={onCancel}>
-            <Text>Kapat</Text>
-          </TouchableOpacity> 
+      <TouchableOpacity style={styles.button} onPress={onCancel}>
+        <Text>Kapat</Text>
+      </TouchableOpacity>
     </Modal>
   );
 
@@ -94,6 +102,13 @@ const styles = ScaledSheet.create({
     borderRadius: 30,
     padding: moderateScale(10),
   },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    alignSelf: 'center',
+    marginTop: 10,
+    marginBottom: 10,
+  },
   itemName: {
     fontSize: 16,
     fontWeight: 'bold',
@@ -106,7 +121,7 @@ const styles = ScaledSheet.create({
     fontSize: 12,
     color: '#888',
   },
-  button:{
+  button: {
     width: '50%',
     height: 50,
     borderWidth: 0.5,
@@ -115,14 +130,14 @@ const styles = ScaledSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 25,
-    marginLeft:20,
+    marginLeft: 20,
     backgroundColor: '#00fa9a',
   },
-  favoriteHeart:{
-    position:"absolute",
-    zIndex:1,
-    right:scale(0),
-    bottom:verticalScale(120)
+  favoriteHeart: {
+    position: "absolute",
+    zIndex: 1,
+    right: scale(0),
+    bottom: verticalScale(120)
   }
 });
 export default FavoriteProductsList;

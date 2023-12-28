@@ -1,55 +1,57 @@
 import { StyleSheet, View } from 'react-native'
-import React,{useState,useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import ProductList from '../components/ProductList'
 import ProductDetail from '../components/ProductDetail'
-import {addOrderedProduct} from '../Services/OrderedProductService'
-import {addBasketProduct} from '../Services/BasketProductService'
-import { getSession } from '../Services/SessionsService'; 
-import {incrementSalesCount} from '../Services/ProductService';
+import { addOrderedProduct } from '../Services/OrderedProductService'
+import { addBasketProduct } from '../Services/BasketProductService'
+import { getSession } from '../Services/SessionsService';
+import { incrementSalesCount } from '../Services/ProductService';
 
-export default function ProductsScreen({navigation}) {  
+export default function ProductsScreen({ navigation }) {
   const [modalProductDetailVisible, setModalProductDetailVisible] = useState(false);
-  const [product, setProduct] =useState(null);
-  const[refreshPage,setRefreshPage]=useState(false);
+  const [product, setProduct] = useState(null);
+  const [refreshPage, setRefreshPage] = useState(false);
 
-useEffect(() => {
-  const fetchProducts = async () => {
-    setRefreshPage(!refreshPage);
-  };
-   navigation.addListener('focus', () => {
-    fetchProducts();
-  });
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setRefreshPage(!refreshPage);
+    };
+    navigation.addListener('focus', () => {
+      fetchProducts();
+    });
 
-}, [navigation,refreshPage]);
+  }, [navigation, refreshPage]);
 
 
   const startModalProductDetail = (product) => {
     setProduct(product);
     setModalProductDetailVisible(true)
-    
-   
-  }; 
-  const endModalProductDetail=()=>{
+
+
+  };
+  const endModalProductDetail = () => {
     setRefreshPage(!refreshPage);
     setModalProductDetailVisible(false)
   }
-  const buyPorduct=async (product)=>{
-    await incrementSalesCount(product.Name,1);
-    const user=await getSession();
-    addOrderedProduct(user,product);
+  const buyPorduct = async (product) => {
+    await incrementSalesCount(product.Name, 1);
+    const user = await getSession();
+    addOrderedProduct(user, product);
     setRefreshPage(!refreshPage);
+    alert("Ürün satın alındı.");
   }
-const addProductToBasket=async (product)=>{
-  const user=await getSession();
-  addBasketProduct(user.UserId,product.ProductId);
-}
+  const addProductToBasket = async (product) => {
+    const user = await getSession();
+    addBasketProduct(user.UserId, product.ProductId);
+    alert("Ürün sepete eklendi.");
+  }
 
   return (
     <View>
 
-      <ProductList onPressProduct={startModalProductDetail}  onRefreshPage={refreshPage}/>
-      <ProductDetail visible={modalProductDetailVisible} product={product} onBuyProduct={buyPorduct} onCancel={endModalProductDetail} 
-      onAddProdutToBasket={addProductToBasket}
+      <ProductList onPressProduct={startModalProductDetail} onRefreshPage={refreshPage} />
+      <ProductDetail visible={modalProductDetailVisible} product={product} onBuyProduct={buyPorduct} onCancel={endModalProductDetail}
+        onAddProdutToBasket={addProductToBasket}
       />
     </View>
   )

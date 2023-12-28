@@ -24,7 +24,6 @@ const [role,setRole]=useState(1);
   }, []);
   useEffect(() => {
     const checkSession = async () => {
-      console.log(role);
       if(role=="noSession"){
         setInitialRoute('Login');
         setIsLoading(false);

@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet,StatusBar,FlatList, Text, View,Image, Button,TouchableOpacity } from 'react-native';
+import { StyleSheet, StatusBar, FlatList, Text, View, Image, Button, TouchableOpacity } from 'react-native';
 import SessionsService from '../Services/SessionsService';
 import UserService from '../Services/UserService';
 import UserUpdate from '../components/UserUpdate';
 import { getSession } from '../Services/SessionsService';
-import { getAllUsers,deleteUser,updateUser } from '../Services/UserService'; 
+import { getAllUsers, deleteUser, updateUser } from '../Services/UserService';
 
 export default function AdminUsersScreen({ navigation }) {
   const [users, setUsers] = useState([]);
   const [id, setId] = useState('');
   const [user, setUser] = useState();
-  const [modalUpdateIsVisible, setModalUpdateIsVisible] = useState(false); 
+  const [modalUpdateIsVisible, setModalUpdateIsVisible] = useState(false);
   const [updateInfoPressed, setUpdateInfoPressed] = useState(false);
-  const [refreshPage,setRefreshPage]=useState(false);
+  const [refreshPage, setRefreshPage] = useState(false);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -24,39 +24,41 @@ export default function AdminUsersScreen({ navigation }) {
   }, [refreshPage]);
   useEffect(() => {
     const fetchId = async () => {
-      const user = await getSession(); 
+      const user = await getSession();
       setUser(user);
     };
 
     fetchId();
-  }, [updateInfoPressed,refreshPage]);
+  }, [updateInfoPressed, refreshPage]);
 
   const startModalUpdate = (user) => {
     setUser(user);
     setModalUpdateIsVisible(true)
-  }; 
-  const endModalUpdate=()=>{
+  };
+  const endModalUpdate = () => {
     setModalUpdateIsVisible(false)
   };
 
-  const UpdateUser =(id,email,name,password,surname,telNo,adress)=>{
-    updateUser(id,email,name,password,surname,telNo,adress);
+  const UpdateUser = (id, email, name, password, surname, telNo, adress) => {
+    updateUser(id, email, name, password, surname, telNo, adress);
     endModalUpdate();
     setUpdateInfoPressed(true);
   }
 
-  const UserList = ({ title }) => { 
+  const UserList = ({ title }) => {
     return (
       <View style={styles.item}>
         <Text>{title.Email}</Text>
         <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={()=> startModalUpdate(user)}>
-        <Text style={styles.text}>Düzenle</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.delButton} onPress={()=> {deleteUser(title.UserId);
-                                                                setRefreshPage(!refreshPage);}}>
+          <TouchableOpacity style={styles.button} onPress={() => startModalUpdate(user)}>
+            <Text style={styles.text}>Düzenle</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.delButton} onPress={() => {
+            deleteUser(title.UserId);
+            setRefreshPage(!refreshPage);
+          }}>
             <Text style={styles.delText} >Sil</Text>
-        </TouchableOpacity>
+          </TouchableOpacity>
         </View>
       </View>
     );
@@ -77,9 +79,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'flex-end', 
-    alignItems: 'flex-start', 
-    paddingHorizontal: 20, 
+    justifyContent: 'flex-end',
+    alignItems: 'flex-start',
+    paddingHorizontal: 20,
     marginTop: StatusBar.currentHeight || 0,
   },
   item: {
@@ -87,32 +89,32 @@ const styles = StyleSheet.create({
     padding: 20,
     marginVertical: 8,
     marginHorizontal: 16,
-    borderWidth: 2, 
+    borderWidth: 2,
     borderColor: 'black',
     backgroundColor: '#E0FFFF',
   },
-  buttonContainer:{
+  buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     backfaceVisibility: 'hidden',
     width: '50%',
   },
   button: {
-   fontSize:35,
-    width:100,
+    fontSize: 35,
+    width: 100,
     backgroundColor: '#02D8E9',
     padding: 5,
-    borderRadius:50,  
-    margin:20,  
+    borderRadius: 50,
+    margin: 20,
   },
   delButton: {
-    fontSize:35,
-     width:100,
-     backgroundColor: 'red',
-     padding: 5,
-     borderRadius:50, 
-     margin:20,  
-   },
+    fontSize: 35,
+    width: 100,
+    backgroundColor: 'red',
+    padding: 5,
+    borderRadius: 50,
+    margin: 20,
+  },
   text: {
     fontSize: 18,
     textAlign: 'center',

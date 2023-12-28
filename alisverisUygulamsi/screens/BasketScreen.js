@@ -1,15 +1,15 @@
-import { FlatList, StyleSheet, Text, Touchable, View ,TouchableOpacity} from 'react-native'
-import React,{useState,useEffect} from 'react'
-import { getSession } from '../Services/SessionsService'; 
+import { FlatList, StyleSheet, Text, Touchable, View, TouchableOpacity } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { getSession } from '../Services/SessionsService';
 import BasketProduct from '../components/BasketProduct';
-import{getUserBasketTotalPrice,clearUserBasket,getBasketProductListWithUserId} from '../Services/BasketProductService';
-import{addOrderedProducts} from '../Services/OrderedProductService';
-import {incrementSalesCount,getProductWithId} from '../Services/ProductService';
+import { getUserBasketTotalPrice, clearUserBasket, getBasketProductListWithUserId } from '../Services/BasketProductService';
+import { addOrderedProducts } from '../Services/OrderedProductService';
+import { incrementSalesCount, getProductWithId } from '../Services/ProductService';
 
 export default function BasketScreen({ navigation }) {
   const [products, setProducts] = useState([]);
-  const[user,setUser]=useState(null);
-  const [isProductRemoved,setIsProductRemoved]=useState(0);
+  const [user, setUser] = useState(null);
+  const [isProductRemoved, setIsProductRemoved] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
   useEffect(() => {
     const fetchProducts = async () => {
@@ -19,80 +19,87 @@ export default function BasketScreen({ navigation }) {
       const price = await getUserBasketTotalPrice(currentUser.UserId);
       setTotalPrice(price);
     };
-     navigation.addListener('focus', () => {
+    navigation.addListener('focus', () => {
       fetchProducts();
     });
     fetchProducts();
-  }, [isProductRemoved,navigation]);
+  }, [isProductRemoved, navigation]);
 
-const payBasket = async () => {
-  addOrderedProducts(user,products,totalPrice);
-  products.forEach(item=>{
-    productUpdateSalesCount(item);
-  })
-  clearUserBasket(user.UserId);
-  setProducts([]);
-  setTotalPrice(0);
-  setIsProductRemoved(isProductRemoved+1);
-}
-const productUpdateSalesCount= async (basketProduct) => {
-  const product = await getProductWithId(basketProduct.ProductId);
-  incrementSalesCount(product.Name,basketProduct.Count);
-}
+  const payBasket = async () => {
+
+    if (products == null || products.length == 0) {
+      alert("Sepetinizde ürün bulunmamaktadır.");
+      return;
+    }
+
+    addOrderedProducts(user, products, totalPrice);
+    products.forEach(item => {
+      productUpdateSalesCount(item);
+    })
+    clearUserBasket(user.UserId);
+    setProducts([]);
+    setTotalPrice(0);
+    setIsProductRemoved(isProductRemoved + 1);
+    alert("Ödeme işleminiz başarıyla gerçekleşmiştir.");
+  }
+  const productUpdateSalesCount = async (basketProduct) => {
+    const product = await getProductWithId(basketProduct.ProductId);
+    incrementSalesCount(product.Name, basketProduct.Count);
+  }
 
   return (
     <View>
-        <FlatList
+      <FlatList
         data={products}
-        renderItem={({ item }) => 
+        renderItem={({ item }) =>
         (
-    <BasketProduct  basketProduct={item}  onIsProductRemoved ={setIsProductRemoved}/>
+          <BasketProduct basketProduct={item} onIsProductRemoved={setIsProductRemoved} />
         )}
       />
-  <View style={styles.paymentContainer}>
-    <Text style={styles.totalPrice}>Toplam Fiyat: {totalPrice}</Text>
+      <View style={styles.paymentContainer}>
+        <Text style={styles.totalPrice}>Toplam Fiyat: {totalPrice}</Text>
 
-      <TouchableOpacity style={styles.button} onPress={()=>{payBasket()}}>
-    <Text style={styles.buttonText} >Ödeme Yap</Text>
-    </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={() => { payBasket(); }}>
+          <Text style={styles.buttonText} >Ödeme Yap</Text>
+        </TouchableOpacity>
 
-  </View>
+      </View>
 
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  paymentContainer:{
-    flexDirection:'row',
-    alignItems:'center',
+  paymentContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
     margin: 6,
     backgroundColor: '#FFF',
     borderRadius: 30,
     padding: 10,
   },
-  totalPrice:{
-    flex:13,
+  totalPrice: {
+    flex: 13,
     fontSize: 16,
     fontWeight: 'bold',
   },
-  buttonText:{
+  buttonText: {
     fontSize: 16,
     fontWeight: 'bold',
-    textAlign:'center',
+    textAlign: 'center',
 
   },
-  button:{
-    flex:6,
-    backgroundColor:'#AFE4DE',
+  button: {
+    flex: 6,
+    backgroundColor: '#AFE4DE',
     borderRadius: 30,
     padding: 10,
-    width:150,
-    height:50,
-    justifyContent:'center',
+    width: 150,
+    height: 50,
+    justifyContent: 'center',
     alignSelf: 'flex-end',
   },
-  
-  
+
+
 
 })

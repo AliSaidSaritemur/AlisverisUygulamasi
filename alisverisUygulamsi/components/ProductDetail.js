@@ -5,45 +5,53 @@ import ProductImage from './ProductImage'
 import { scale, verticalScale, moderateScale, ScaledSheet } from 'react-native-size-matters';
 
 
-export default function ProductDetail({ product, visible, onBuyProduct, onCancel,onAddProdutToBasket }) {
+export default function ProductDetail({ product, visible, onBuyProduct, onCancel, onAddProdutToBasket }) {
+
+  const [isProcessing, setIsProcessing] = React.useState(false);
+  const addProductBasket = async (product) => {
+    setIsProcessing(true);
+    await onAddProdutToBasket(product);
+    setIsProcessing(false);
+  };
+
   return (
     visible ?
-    
+
       <Modal
         animationType="slide"
         visible={visible}>
-           <ScrollView    contentContainerStyle={styles.scrollViewContent}
-        keyboardShouldPersistTaps="handled">
+        <ScrollView contentContainerStyle={styles.scrollViewContent}
+          keyboardShouldPersistTaps="handled">
           <View style={styles.addBasketContainer}>
-            <TouchableOpacity style={styles.addBasket }onPress={() => onAddProdutToBasket(product)} >
-              <Ionicons name="basket-outline" size={scale(30)}  />
+            <TouchableOpacity style={styles.addBasket} onPress={() => addProductBasket(product)} disabled={isProcessing}>
+              <Ionicons name="basket-outline" size={scale(30)} />
               <Text style={styles.basketButtonText}>Sepete Ekle</Text>
             </TouchableOpacity>
           </View>
-        <View style={styles.container}>
+          <View style={styles.container}>
 
-          <View style={styles.image}>
-          <ProductImage productName={product.Name} width={scale(250)} height={scale(250)} />
-          <Text style={styles.text}>Ürün Adı: {product.Name}</Text>
-          <Text style={styles.text}>Ürün Fiyatı: {product.Price}</Text>
-          </View>
-              <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.button} onPress={() => onBuyProduct(product)}>
+            <View style={styles.image}>
+              <ProductImage productName={product.Name} width={scale(250)} height={scale(250)} />
+              <Text style={styles.text}>Ürün Adı: {product.Name}</Text>
+              <Text style={styles.text}>Ürün Fiyatı: {product.Price}</Text>
+            </View>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity style={styles.button} onPress={() => onBuyProduct(product)}>
                 <Text style={styles.buttonText}>Satın Al</Text>
-                </TouchableOpacity>
-              </View>
-            
-          <View style={{margin:10}}>
-            <TouchableOpacity style={styles.closeBttn} onPress={onCancel}>
-            <Ionicons name='close-circle-outline' size={scale(50)} color='#000' />
-            </TouchableOpacity>
+              </TouchableOpacity>
+            </View>
+
+            <View style={{ margin: 10 }}>
+              <TouchableOpacity style={styles.closeBttn} onPress={onCancel}>
+                <Ionicons name='close-circle-outline' size={scale(50)} color='#000' />
+              </TouchableOpacity>
+            </View>
+
+
           </View>
-          
-  
-        </View>
         </ScrollView>
       </Modal>
-      :null
+      : null
   )
 }
 
@@ -61,7 +69,7 @@ const styles = ScaledSheet.create({
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop:20,
+    marginTop: 20,
   },
   button: {
     width: '70%',
@@ -89,13 +97,13 @@ const styles = ScaledSheet.create({
     fontWeight: 'bold',
     marginLeft: 10,
   },
-  image:{
+  image: {
     marginStart: 10,
-    paddingTop:150,
+    paddingTop: 150,
     marginTop: 20,
     marginBottom: 20,
   },
-  closeBttn:{
+  closeBttn: {
     alignItems: 'center',
     padding: 50,
     margin: 10,
@@ -104,11 +112,11 @@ const styles = ScaledSheet.create({
   addBasketContainer: {
     position: 'absolute',
     top: 0,
-     zIndex: 1,
-     left: 230,
-     right: 10,
-     marginTop: 20,
-     width: 150,
+    zIndex: 1,
+    left: 230,
+    right: 10,
+    marginTop: 20,
+    width: 150,
   },
 
 })

@@ -1,19 +1,18 @@
-import {  ToastAndroid, Platform } from 'react-native'
 import { app, db } from '../fireBase';
 
-import { getFirestore, collection, addDoc, doc, deleteDoc, getDoc,query,where,getDocs,updateDoc } from 'firebase/firestore';
+import { getFirestore, collection, addDoc, doc, deleteDoc, getDoc, query, where, getDocs, updateDoc } from 'firebase/firestore';
 
 
 
 export const deleteUser = async (userId) => {
   try {
-      await deleteDoc(doc(db, "Users", userId));
-      console.log("User deleted");
+    await deleteDoc(doc(db, "Users", userId));
+    console.log("User deleted");
   } catch (e) {
-      console.error("Error deleting user: ", e);
+    console.error("Error deleting user: ", e);
   }
 }
-export const addUser = async (email, name, password, surname, telno, adress , role) => {
+export const addUser = async (email, name, password, surname, telno, adress, role) => {
   try {
     const docRef = await addDoc(collection(db, "Users"), {
       Email: email,
@@ -27,9 +26,6 @@ export const addUser = async (email, name, password, surname, telno, adress , ro
     await updateDoc(doc(db, "Users", docRef.id), {
       UserId: docRef.id,
     });
-    if(Platform.OS === "android"){
-      ToastAndroid.show(`User added`, ToastAndroid.SHORT); 
-    }
   } catch (e) {
     console.error("Error adding document: ", e);
   }
@@ -37,28 +33,28 @@ export const addUser = async (email, name, password, surname, telno, adress , ro
 export const updateUser = async (id, email, name, password, surname, telno, address) => {
 
   try {
-      const userRef = doc(db, "Users", id);
-      const updatedUser = { Email: email, Name: name, Password: password, Surname: surname, TelNo: telno, Adress: address };
-      await updateDoc(userRef, updatedUser);
-      console.log("User updated successfully.");
+    const userRef = doc(db, "Users", id);
+    const updatedUser = { Email: email, Name: name, Password: password, Surname: surname, TelNo: telno, Adress: address };
+    await updateDoc(userRef, updatedUser);
+    console.log("User updated successfully.");
   } catch (error) {
-      console.error("Error updating user: ", error);
+    console.error("Error updating user: ", error);
   }
 }
 export const getUser = async (userId) => {
   try {
-      const docRef = doc(db, "Users", userId);
-      const docSnap = await getDoc(docRef);
+    const docRef = doc(db, "Users", userId);
+    const docSnap = await getDoc(docRef);
 
-      if (docSnap.exists()) {
-          return docSnap.data(); 
-      } else {
-          console.log("No such user!");
-          return null; 
-      }
+    if (docSnap.exists()) {
+      return docSnap.data();
+    } else {
+      console.log("No such user!");
+      return null;
+    }
   } catch (e) {
-      console.error("Error getting user: ", e);
-      throw e; 
+    console.error("Error getting user: ", e);
+    throw e;
   }
 }
 
@@ -66,22 +62,22 @@ export const logIn = async (email, password) => {
   const db = getFirestore();
 
   try {
-      const usersRef = collection(db, "Users");
-      const q = query(usersRef, where("Email", "==", email), where("Password", "==", password));
-      const querySnapshot = await getDocs(q);
+    const usersRef = collection(db, "Users");
+    const q = query(usersRef, where("Email", "==", email), where("Password", "==", password));
+    const querySnapshot = await getDocs(q);
 
-      if (!querySnapshot.empty) {
-        const docSnapshot = querySnapshot.docs[0];
-        const user = docSnapshot.data();
-        user.id = docSnapshot.id;
-        return user;
+    if (!querySnapshot.empty) {
+      const docSnapshot = querySnapshot.docs[0];
+      const user = docSnapshot.data();
+      user.id = docSnapshot.id;
+      return user;
     } else {
-        console.log("Invalid email or password.");
-        return null;
+      console.log("Invalid email or password.");
+      return null;
     }
   } catch (error) {
-      console.error("Error signing in: ", error);
-      return null;
+    console.error("Error signing in: ", error);
+    return null;
   }
 
 }

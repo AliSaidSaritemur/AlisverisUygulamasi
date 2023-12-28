@@ -1,4 +1,3 @@
-import { StyleSheet, Text, View, ToastAndroid, Platform } from 'react-native'
 import { app, db } from '../fireBase';
 import { getFirestore, collection, addDoc, doc, deleteDoc, getDoc,query,where,getDocs,updateDoc,increment } from 'firebase/firestore';
 
@@ -15,9 +14,6 @@ export const addProduct = async (name,price ) => {
     await updateDoc(doc(db, "Products", docRef.id), {
       ProductId: docRef.id,
     });
-    if(Platform.OS === "android"){
-      ToastAndroid.show(`Product added`, ToastAndroid.SHORT); 
-    }
   } catch (e) {
     console.error("Error adding document: ", e);
   }
@@ -39,7 +35,7 @@ export const getIdByName = async (name) => {
       querySnapshot.forEach((doc) => {
           id = doc.id;
       });
-      console.log("ID fetched successfully: ", id);
+
       return id;
   } catch (error) {
       console.error("Error fetching ID: ", error);
@@ -86,7 +82,7 @@ export const incrementSalesCount = async (name,incCount) => {
     const id = await getIdByName(name); 
     const productRef = doc(db, "Products", id);
     await updateDoc(productRef, { SalesCount: increment(incCount) });
-    console.log("SalesCount incremented successfully.");
+
   } catch (error) {
     console.error("Error incrementing SalesCount: ", error);
   }
@@ -95,9 +91,6 @@ export const updateProduct = async (id, name, price) => {
   try {
     const productRef = doc(db, "Products", id);
     await updateDoc(productRef, { Name: name, Price: price });
-    if(Platform.OS === "android"){
-      ToastAndroid.show(`Product updated`, ToastAndroid.SHORT); 
-    }
   } catch (e) {
     console.error("Error updating document: ", e);
   }
@@ -116,9 +109,6 @@ export const getTotalSalesCount = async () => {
 export const deleteProduct = async (id) => {
   try {
     await deleteDoc(doc(db, "Products", id));
-    if(Platform.OS === "android"){
-      ToastAndroid.show(`Product deleted`, ToastAndroid.SHORT); 
-    }
   } catch (e) {
     console.error("Error deleting document: ", e);
   }

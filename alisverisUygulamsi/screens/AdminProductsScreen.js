@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet,StatusBar,FlatList, Text, View,Image, Button,TouchableOpacity } from 'react-native';
+import { StyleSheet, StatusBar, FlatList, Text, View, Image, Button, TouchableOpacity } from 'react-native';
 import AdminProductDetail from '../components/AdminProductDetail'
 import ProductList from '../components/ProductList'
 import AddProduct from '../components/AddProduct'
@@ -7,61 +7,60 @@ import ProductsNotInMarket from '../components/ProductsNotInMarket'
 
 export default function AdminProductsScreen({ navigation }) {
   const [product, setProduct] = useState(null);
-  const [modalAdminProductDetailVisible,setModalProductDetailVisible]=useState(false);
-  const[refreshPage,setRefreshPage]=useState(false);
-  const[modalAddProductIsVisible,setModalAddProductVisible]=useState(false);
-  const[modalAddProductInMarketIsVisible,setModalAddProductInMarketVisible]=useState(false);
+  const [modalAdminProductDetailVisible, setModalProductDetailVisible] = useState(false);
+  const [refreshPage, setRefreshPage] = useState(false);
+  const [modalAddProductIsVisible, setModalAddProductVisible] = useState(false);
+  const [modalAddProductInMarketIsVisible, setModalAddProductInMarketVisible] = useState(false);
 
   useEffect(() => {
     const fetchProducts = async () => {
       setRefreshPage(!refreshPage);
     };
-     navigation.addListener('focus', () => {
+    navigation.addListener('focus', () => {
       fetchProducts();
     });
-  
-  }, [navigation,refreshPage]);
+
+  }, [navigation, refreshPage]);
 
 
-  const startModalAdminProductDetail=(product)=>{
+  const startModalAdminProductDetail = (product) => {
     setProduct(product);
-    console.log(product);
     setModalProductDetailVisible(true);
   };
-  const endModalAdminProductDetail=()=>{
+  const endModalAdminProductDetail = () => {
     setRefreshPage(!refreshPage);
     setModalProductDetailVisible(false);
   };
-  const startModalAddProduct=()=>{
+  const startModalAddProduct = () => {
     setModalAddProductVisible(true);
   };
-  const endModalAddProduct=()=>{
+  const endModalAddProduct = () => {
     setRefreshPage(!refreshPage);
     setModalAddProductVisible(false);
   };
-const startModalProductsNotInMarket=()=>{
-  setModalAddProductInMarketVisible(true);
-}
-const endModalProductsNotInMarket=()=>{
-  setRefreshPage(!refreshPage);
-  setModalAddProductInMarketVisible(false);
-}
+  const startModalProductsNotInMarket = () => {
+    setModalAddProductInMarketVisible(true);
+  }
+  const endModalProductsNotInMarket = () => {
+    setRefreshPage(!refreshPage);
+    setModalAddProductInMarketVisible(false);
+  }
 
 
   return (
     <View style={styles.container}>
-      <ProductList onPressProduct={startModalAdminProductDetail} onRefreshPage={refreshPage}/>
-      <AdminProductDetail visible={modalAdminProductDetailVisible} product={product} onCancel={endModalAdminProductDetail}/>
+      <ProductList onPressProduct={startModalAdminProductDetail} onRefreshPage={refreshPage} />
+      <AdminProductDetail visible={modalAdminProductDetailVisible} product={product} onCancel={endModalAdminProductDetail} />
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={()=>startModalProductsNotInMarket()}>
+        <TouchableOpacity style={styles.button} onPress={() => startModalProductsNotInMarket()}>
           <Text style={styles.buttonText}>Satılmayan Ürünler</Text>
-        </TouchableOpacity>  
-        <TouchableOpacity style={styles.button} onPress={()=>startModalAddProduct()}>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={() => startModalAddProduct()}>
           <Text style={styles.buttonText}>Ürün Ekle</Text>
-        </TouchableOpacity>  
+        </TouchableOpacity>
       </View>
-      <AddProduct visible={modalAddProductIsVisible} onCancel={endModalAddProduct}/>
-      <ProductsNotInMarket  visible={modalAddProductInMarketIsVisible} onCancel={endModalProductsNotInMarket}/>
+      <AddProduct visible={modalAddProductIsVisible} onCancel={endModalAddProduct} />
+      <ProductsNotInMarket visible={modalAddProductInMarketIsVisible} onCancel={endModalProductsNotInMarket} />
     </View>
   )
 }
@@ -70,19 +69,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignContent:'center',
-    justifyContent:'center'
+    alignContent: 'center',
+    justifyContent: 'center'
   },
   button: {
     backgroundColor: 'mediumspringgreen',
     padding: 10,
     margin: 10,
-    alignContent:'center',
+    alignContent: 'center',
     borderRadius: 10,
     alignSelf: 'center',
     width: '80%',
   },
-  buttonContainer:{
+  buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',

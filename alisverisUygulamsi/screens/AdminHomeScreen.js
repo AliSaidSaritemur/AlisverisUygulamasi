@@ -6,9 +6,9 @@ import AdminProductsScreen from './AdminProductsScreen';
 import AdminUsersScreen from './AdminUsersScreen';
 import AdminStatsScreen from './AdminStatsScreen';
 
-const adminHome="Veriler";
-const adminProfile="Üyeler";
-const adminMarket="Ürünler";
+const adminHome = "Veriler";
+const adminProfile = "Üyeler";
+const adminMarket = "Ürünler";
 const Tab = createBottomTabNavigator();
 export default function AdminHomeScreen({ navigation }) {
   return (
@@ -25,7 +25,7 @@ export default function AdminHomeScreen({ navigation }) {
           } else if (route.name === adminMarket) {
             iconName = focused ? 'basket' : 'basket-outline';
           }
-    
+
           return <Ionicons name={iconName} size={size} color={color} />;
         },
         tabBarActiveTintColor: '#00fa9a',
@@ -34,9 +34,9 @@ export default function AdminHomeScreen({ navigation }) {
         tabBarStyle: { padding: 10, height: 70 }
       })}
     >
-      <Tab.Screen name={adminHome} component={AdminStatsScreen}  options={{ headerShown: false }} />
-      <Tab.Screen name={adminProfile} component={AdminUsersScreen}   options={{ headerShown: false }}/>
-      <Tab.Screen name={adminMarket} component={AdminProductsScreen}  options={{ headerShown: false }} />
+      <Tab.Screen name={adminHome} component={AdminStatsScreen} options={{ headerShown: false }} />
+      <Tab.Screen name={adminProfile} component={AdminUsersScreen} options={{ headerShown: false }} />
+      <Tab.Screen name={adminMarket} component={AdminProductsScreen} options={{ headerShown: false }} />
 
     </Tab.Navigator>
   )
