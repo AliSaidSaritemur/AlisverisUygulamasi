@@ -51,7 +51,10 @@ const getReciepe=(date)=>{
           </View>
         )}
       />
-      <Button title="Kapat" onPress={onCancel} />
+      <TouchableOpacity style={styles.button} 
+        onPress={onCancel}>
+        <Text>Kapat</Text>
+      </TouchableOpacity> 
       <Receipt visible={receiptVisible} onCancel={()=>setReceiptVisible(false)} 
       user={user} refreshPage={refreshPage} date={date}/>
       </Modal>
@@ -73,6 +76,18 @@ container:{
 productInfo:{
     fontSize: 16,
     fontWeight: 'bold',
+},
+button:{
+  width: '50%',
+  height: 50,
+  borderWidth: 0.5,
+  borderRadius: 10,
+  alignSelf: 'center',
+  justifyContent: 'center',
+  alignItems: 'center',
+  marginTop: 25,
+  marginLeft:20,
+  backgroundColor: '#00fa9a',
 },
 productInfoContainer:{
   marginLeft: 10,},

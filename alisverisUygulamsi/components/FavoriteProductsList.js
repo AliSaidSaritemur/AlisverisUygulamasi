@@ -73,7 +73,9 @@ const [detailedProduct, setDetailedProduct] = useState(null);
      <ProductDetail visible={modalProductDetailVisible} product={detailedProduct} onBuyProduct={buyPorduct} onCancel={endModalProductDetail} 
       onAddProdutToBasket={addProductToBasket}
       />
-          <Button title="Kapat" onPress={onCancel} />
+          <TouchableOpacity style={styles.button} onPress={onCancel}>
+            <Text>Kapat</Text>
+          </TouchableOpacity> 
     </Modal>
   );
 
@@ -100,6 +102,18 @@ const styles = ScaledSheet.create({
   itemSalesCount: {
     fontSize: 12,
     color: '#888',
+  },
+  button:{
+    width: '50%',
+    height: 50,
+    borderWidth: 0.5,
+    borderRadius: 10,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 25,
+    marginLeft:20,
+    backgroundColor: '#00fa9a',
   },
   favoriteHeart:{
     position:"absolute",

@@ -40,7 +40,7 @@ export default function LoginScreeen ({ navigation })  {
   return (
     
     <View style={styles.container}>
-      <Text style={styles.title}>Alışveriş Uygulaması</Text>
+      <Text style={styles.title}>Bakkal Amca</Text>
       <TextInput
         style={styles.input}
         placeholder="Email"
@@ -71,6 +71,7 @@ const styles = ScaledSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 16,
+    textAlign: 'center',
   },
   input: {
     height: 40,
@@ -86,7 +87,7 @@ const styles = ScaledSheet.create({
     marginTop: 16,
   },
   logInButton: {
-    backgroundColor: '#1976d2',
+    backgroundColor: '#32CD32',
   },
   buttonText: {
     color: 'white',

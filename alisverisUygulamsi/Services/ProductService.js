@@ -16,7 +16,7 @@ export const addProduct = async (name,price ) => {
       ProductId: docRef.id,
     });
     if(Platform.OS === "android"){
-      ToastAndroid.show(`Product added`, ToastAndroid.SHORT); 
+      ToastAndroid.show(`Ürün Eklendi.`, ToastAndroid.SHORT); 
     }
   } catch (e) {
     console.error("Error adding document: ", e);

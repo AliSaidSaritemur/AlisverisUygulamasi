@@ -63,7 +63,7 @@ const startModalLastOrders = () => {
     <Text style={styles.buttonText}>Profil Bilgilerini güncelle</Text>
   </TouchableOpacity>
   <TouchableOpacity style={styles.button} onPress={startModalLastOrders}>
-    <Text style={styles.buttonText}>Geçimiş Siparişlerim</Text>
+    <Text style={styles.buttonText}>Geçmiş Siparişlerim</Text>
   </TouchableOpacity>
   <TouchableOpacity style={styles.button} onPress={startModalFavorites}>
     <Text style={styles.buttonText}>Favorilerim</Text>
@@ -99,17 +99,23 @@ userImage: {
 
 buttonContainer: {
   marginTop: 20,
+  width: '90%',
+  justifyContent: 'center',
 },
 button: {
-  backgroundColor: '#007BFF',
+  width: '90%',
+  height: 50,
+  borderWidth: 0.5,
+  borderRadius: 10,
   alignSelf: 'center',
-  padding: 10,
-  borderRadius: 5,
-  marginVertical: 10,
-  width: '150%',
+  justifyContent: 'center',
+  alignItems: 'center',
+  marginTop: 30,
+  marginLeft:20,
+  backgroundColor: '#00fa9a',
 },
 buttonText: {
-  color: '#fff',
+  color: 'black',
   textAlign: 'center',
 },
 

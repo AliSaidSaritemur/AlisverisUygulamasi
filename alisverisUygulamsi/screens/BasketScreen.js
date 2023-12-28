@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     flexDirection:'row',
     alignItems:'center',
     margin: 6,
-    backgroundColor: '#00FFA2',
+    backgroundColor: '#FFF',
     borderRadius: 30,
     padding: 10,
   },
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
   },
   button:{
     flex:6,
-    backgroundColor:'yellow',
+    backgroundColor:'#AFE4DE',
     borderRadius: 30,
     padding: 10,
     width:150,

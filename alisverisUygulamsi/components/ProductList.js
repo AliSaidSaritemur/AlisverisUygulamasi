@@ -27,7 +27,7 @@ const ProductList = ({onPressProduct,onRefreshPage}) => {
       {role!="admin"?<FavoriteHeartIcon  ProductId={item.ProductId} />:null}
          </View>
       <TouchableOpacity onPress={()=>onPressProduct(item)}>
-      <ProductImage productName={item.Name} height={verticalScale(80)} width={scale(80)} />
+      <ProductImage productName={item.Name} height={verticalScale(100)} width={scale(100)} />
        <Text style={styles.itemName}>{item.Name}</Text>
       <Text style={styles.itemPrice}>Fiyat: {item.Price}₺</Text>
       <Text style={styles.itemSalesCount}>Satış Sayısı: {item.SalesCount}</Text>
@@ -38,21 +38,24 @@ const ProductList = ({onPressProduct,onRefreshPage}) => {
   );
   
   return (
-    <FlatList
-      data={products}
-      renderItem={renderItem}
-      keyExtractor={item => item.id}
-      numColumns={3}
-      contentContainerStyle={styles.listContainer}
-    />
+<FlatList
+  data={products}
+  renderItem={renderItem}
+  keyExtractor={(item) => item.ProductId}
+  numColumns={2}
+  contentContainerStyle={styles.listContainer}
+/>
   );
 };
 const styles = ScaledSheet.create({
   listContainer: {
     padding: moderateScale(10),
+    alignItems: 'center',
   },
   itemContainer: {
-    margin: 6,
+    marginHorizontal: 30,
+    marginVertical: 10,
+
     alignItems: 'center',
     backgroundColor: '#f8f8f8',
     borderRadius: 30,

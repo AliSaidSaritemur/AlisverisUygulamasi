@@ -1,6 +1,6 @@
-import { Button, FlatList, Modal, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import {getProductsNotInMarket} from '../Services/ProductService';
+import { Button, FlatList, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 
 export default function ProductsNotInMarket({visible,onCancel}) {
     const [products, setProducts] = useState([]);   

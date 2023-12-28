@@ -53,9 +53,10 @@ const[base64Image,setBase64Image]=useState(null);
     });
 
     if (!result.canceled) {
-      setImage(result.assets[0].uri);
-      setBase64Image (await convertImageToBase64(image));
-      console.log(result.assets[0].uri)
+      const imageUri = result.assets[0].uri;
+      setImage(imageUri);
+      setBase64Image(await convertImageToBase64(imageUri));
+      console.log(imageUri);
     }
   };
   
@@ -93,17 +94,17 @@ const closePage=()=>{
         
         
         {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
-        <TextInput
+          <TextInput
             placeholder="Ürün Adını Giriniz"
             style={styles.inputStyle}
             value={name}
             onChangeText={text => setName(text)}
           />
-          <TextInput
+         <TextInput
             placeholder="Ürünün Fiyatını Giriniz"
             style={styles.inputStyle}
-            value={price}
-            onChangeText={text => setPrice(text)}
+            value={price.toString()}
+            onChangeText={text => setPrice(Number(text))}
           />
         <View style={styles.pickBtn}>
           <TouchableOpacity style={styles.button} onPress={pickImage}>

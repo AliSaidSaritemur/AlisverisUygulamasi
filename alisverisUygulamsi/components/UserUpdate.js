@@ -74,6 +74,7 @@ export default function UserUpdate({visible,onUpdateUser,onCancel,user}) {
  <ScrollView    contentContainerStyle={styles.scrollViewContent}
         keyboardShouldPersistTaps="handled">
         <View style={styles.inputContainer}>
+          <Text style={styles.text  }>Kullanıcı Bilgilerini Güncelle</Text>
           
 <TextInput style={styles.textInput} value={name} onChangeText={setName} placeholder='Adınızı Giriniz!'
 />
@@ -103,7 +104,7 @@ const styles = StyleSheet.create({
       flex:1,
       alignItems:'center',
       justifyContent:'center',
-      backgroundColor:'gray',
+      backgroundColor:'white',
       padding:15,
     },
     image:{
@@ -113,13 +114,17 @@ const styles = StyleSheet.create({
       margin:20,
     },
     textInput:{
-borderWidth:1,
-width:'100%',
-padding:10,
-borderRadius:10,
-backgroundColor:'yellow',
-borderColor:"yellow",
-marginVertical:10,
+      width: '90%',
+      height: 50,
+      paddingLeft: 20,
+      paddingRight: 20,
+      marginTop: 30,
+      alignSelf: 'center',
+      borderWidth: 2, 
+      borderColor: 'black', 
+      alignItems: 'center',
+      textAlign: 'center',
+      borderRadius: 5,
     },
     buttonContainer:{
       flexDirection:'row',
@@ -134,5 +139,10 @@ marginVertical:10,
       justifyContent: 'space-between',
 
     },
+    text:{
+      textAlign:'center',
+      fontSize:20,
+      fontWeight: 'bold',
+    }
 
 })

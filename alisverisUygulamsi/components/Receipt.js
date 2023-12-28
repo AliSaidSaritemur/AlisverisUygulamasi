@@ -53,10 +53,14 @@ export default  function Receipt({visible,onCancel,user,date}) {
           </View>
         )}
       />
-      <Button title="Kapat" onPress={()=>{
-        setList([]);
-        setIsLoading(false);       
-        onCancel();}} />
+        <TouchableOpacity onPress={()=>{
+          setList([]);
+          setIsLoading(false);       
+          onCancel();}} 
+          style={styles.button}
+        >
+          <Text>Kapat</Text>
+        </TouchableOpacity>
       </Modal>
 
   )
@@ -79,6 +83,18 @@ productInfo:{
 productInfoContainer:{
   marginLeft: 10,},
 
+  button:{
+    width: '50%',
+    height: 50,
+    borderWidth: 0.5,
+    borderRadius: 10,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 25,
+    marginLeft:20,
+    backgroundColor: '#00fa9a',
+  },
   userMailText:{
     fontSize: 15,
     fontWeight: 'bold',
