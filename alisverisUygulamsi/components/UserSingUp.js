@@ -9,7 +9,7 @@ export default function UserSingUp({ visible, onAddUser, onCancel }) {
   const [surname, setSurname] = useState("");
   const [telNo, setTelNo] = useState("");
   const [adress, setAdress] = useState("");
-  const validateInput = (email, phone, password, name, username) => {
+  const validateInput = async (email, phone, password, name, username) => {
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const nameRegex = /^[A-Za-z\s]+$/;
@@ -28,7 +28,7 @@ export default function UserSingUp({ visible, onAddUser, onCancel }) {
     }
 
 
-    if (getUserByEmail(email) != null) {
+    if (await getUserByEmail(email) != null) {
       return { isValid: false, message: 'Bu mail adresi kullanılmaktadır' };
     }
     const phoneRegex = /^\d{10}$/;
@@ -55,9 +55,8 @@ export default function UserSingUp({ visible, onAddUser, onCancel }) {
     setAdress("");
   };
   const addUserHandler = async () => {
-
-    const { isValid, message } = validateInput(email, telNo, password, name, surname, adress);
-
+    const { isValid, message } = await validateInput(email, telNo, password, name, surname, adress);
+  
     if (isValid) {
       onAddUser(email, name, password, surname, telNo, adress);
       refreshHandler();
@@ -67,7 +66,6 @@ export default function UserSingUp({ visible, onAddUser, onCancel }) {
     else {
       alert(message);
     }
-
   }
   return (
     <Modal

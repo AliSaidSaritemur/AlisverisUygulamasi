@@ -21,7 +21,6 @@ export default function LoginScreeen({ navigation }) {
     const loginUser = await logIn(email, password);
     if (loginUser != null) {
       setSessionWithId(loginUser.id);
-      //   YourComponent();
       if (loginUser.Role == "admin") {
         navigation.navigate('AdminHome');
       } else {

@@ -23,7 +23,7 @@ export default function UserUpdate({ visible, onUpdateUser, onCancel, user }) {
     setAdress(user.Adress);
     setId(user.UserId);
   }, [user])
-  const validateInput = (email, phone, password, name, username) => {
+  const validateInput = async (email, phone, password, name, username) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const nameRegex = /^[A-Za-z\s]+$/;
     const usernameRegex = /^[A-Za-z]+$/;
@@ -39,10 +39,10 @@ export default function UserUpdate({ visible, onUpdateUser, onCancel, user }) {
     if (!emailRegex.test(email)) {
       return { isValid: false, message: 'Mail uygun formatta değil' };
     }
-    if (getUserByEmail(email) != null) {
+    const existingUser = await getUserByEmail(email);
+    if (existingUser != null && existingUser.Name != user.Name) {
       return { isValid: false, message: 'Bu mail adresi kullanılmaktadır' };
     }
-
     const phoneRegex = /^\d{10}$/;
     if (!phoneRegex.test(phone)) {
       return { isValid: false, message: 'Telefon numarası uygun fortmatta değil örnek (5365647666)' };
@@ -61,7 +61,7 @@ export default function UserUpdate({ visible, onUpdateUser, onCancel, user }) {
 
   const addUserHandler = async () => {
 
-    const { isValid, message } = validateInput(email, telNo, password, name, surname, adress);
+    const { isValid, message } = await validateInput(email, telNo, password, name, surname, adress);
 
     if (isValid) {
       onUpdateUser(id, email, name, password, surname, telNo, adress);

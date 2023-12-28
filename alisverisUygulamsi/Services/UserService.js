@@ -36,7 +36,6 @@ export const updateUser = async (id, email, name, password, surname, telno, addr
     const userRef = doc(db, "Users", id);
     const updatedUser = { Email: email, Name: name, Password: password, Surname: surname, TelNo: telno, Adress: address };
     await updateDoc(userRef, updatedUser);
-    console.log("User updated successfully.");
   } catch (error) {
     console.error("Error updating user: ", error);
   }
