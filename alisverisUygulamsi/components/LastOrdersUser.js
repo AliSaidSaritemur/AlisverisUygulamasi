@@ -36,6 +36,7 @@ const getReciepe=(date)=>{
         animationType="slide"
         visible={visible}>
         <FlatList
+        keyExtractor={(item) => item.Date}
         data={orders}
         renderItem={({ item }) => (
           <View style={styles.container}>

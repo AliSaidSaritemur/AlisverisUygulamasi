@@ -4,8 +4,8 @@ import React, { useEffect } from 'react'
 import ProductImage from './ProductImage'
 import { scale, verticalScale, moderateScale, ScaledSheet } from 'react-native-size-matters';
 import { useState } from 'react';
-import { updateProduct } from '../Services/ProductService';
-import { deleteProduct } from '../Services/ProductService';
+import { updateProduct,productOutFromMarket } from '../Services/ProductService';
+
 
 
 export default function AdminProductDetail({product, visible,onCancel}) {
@@ -46,7 +46,7 @@ export default function AdminProductDetail({product, visible,onCancel}) {
                 <TouchableOpacity style={styles.button} onPress={() => updateProduct(product.ProductId,product.Name,price)}>
                     <Text style={styles.buttonText}>Güncelle</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.deleteBttn} onPress={() =>{ deleteProduct(product.ProductId);onCancel();}}>
+                <TouchableOpacity style={styles.deleteBttn} onPress={() =>{ productOutFromMarket(product.ProductId);onCancel();}}>
                     <Text style={styles.buttonText} >Sil</Text>
                    </TouchableOpacity>
                 </View>

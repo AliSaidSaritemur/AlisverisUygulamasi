@@ -63,11 +63,11 @@ const [detailedProduct, setDetailedProduct] = useState(null);
     animationType="slide"
         visible={visible}
     >
-    <FlatList
+<FlatList
       data={productList}
       renderItem={renderItem}
-      keyExtractor={item => item.id}
-      numColumns={3}
+      keyExtractor={item => item.ProductId}
+      numColumns={2}
       contentContainerStyle={styles.listContainer}
     />
      <ProductDetail visible={modalProductDetailVisible} product={detailedProduct} onBuyProduct={buyPorduct} onCancel={endModalProductDetail} 
@@ -83,9 +83,12 @@ const [detailedProduct, setDetailedProduct] = useState(null);
 const styles = ScaledSheet.create({
   listContainer: {
     padding: moderateScale(10),
+    alignItems: 'center',
   },
   itemContainer: {
-    margin: 6,
+    marginHorizontal: 30,
+    marginVertical: 10,
+
     alignItems: 'center',
     backgroundColor: '#f8f8f8',
     borderRadius: 30,

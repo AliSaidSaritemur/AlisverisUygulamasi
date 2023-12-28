@@ -7,7 +7,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { scale } from 'react-native-size-matters'
 import {getUser} from '../Services/UserService'
 import Receipt from '../components/Receipt'
-export default function AdminStatsScreen() {
+export default function AdminStatsScreen({ navigation }) {
     const [totalRevenue, setTotalRevenue] = useState(0);
     const [totalSalesCount, setTotalSalesCount] = useState(0);  
     const [orders, setOrders] = useState([]);
@@ -16,24 +16,33 @@ export default function AdminStatsScreen() {
     const [date, setDate] = useState(null);
     useEffect(() => {
       const fetchStats = async () => {
-        const revenue = await getTotalRevenue();
-        const salesCount = await getTotalSalesCount();
-       let tempOrders =await getOrderedProductPackageList();
-       tempOrders.sort((a, b) => new Date(b.Date) - new Date(a.Date));
-       tempOrders =await  Promise.all(tempOrders.map(async (order) => {
-        const user = await getUser(order.UserId);
-        const email = user.Email;
-        return { ...order, Email: email };
-      }));
-
-        setOrders(tempOrders);
-        setTotalRevenue(revenue);
-        setTotalSalesCount(salesCount);
-
+        let tempOrders = await getOrderedProductPackageList();   
+    
+        tempOrders.sort((a, b) => new Date(b.Date) - new Date(a.Date));
+        tempOrders = await Promise.all(tempOrders.map(async (order) => {
+          const user = await getUser(order.UserId);
+          const email = user.Email;
+          return { ...order, Email: email };
+        }));
+    
+        setOrders(tempOrders); 
       };
-  
+    
       fetchStats();
     }, []);
+    useEffect(() => {
+      const fetchStats = async () => {
+        const revenue = await getTotalRevenue();
+        const salesCount = await getTotalSalesCount();
+
+       setTotalRevenue(revenue);
+       setTotalSalesCount(salesCount);
+      };
+      navigation.addListener('focus', () => {
+        fetchStats();
+      });
+    }, [navigation]);
+
     const getReciepe=async (date,userId)=>{
       setUser(await getUser(userId));
       setDate(date);
@@ -47,6 +56,7 @@ export default function AdminStatsScreen() {
       </View>
       <FlatList
         data={orders}
+        keyExtractor={(item) => `${item.UserId}-${item.Date}`}
         renderItem={({ item }) => (
           <View style={styles.products}>
             <TouchableOpacity onPress={()=>getReciepe(item.Date,item.UserId)}>

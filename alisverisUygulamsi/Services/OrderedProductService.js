@@ -4,7 +4,7 @@ import { app, db } from '../fireBase';
 import moment from 'moment';
 import {addOrderedProductPackage} from '../Services/OrderedProductPackageService';
 import { getFirestore, collection, addDoc, doc, deleteDoc, getDoc,query,where,getDocs } from 'firebase/firestore';
-
+import {getProductWithId} from './ProductService';
 const firestore = getFirestore(app);
 
 
@@ -18,6 +18,8 @@ export const addOrderedProduct = (user,product) => {
         Adress: user.Adress,
         Count:1,
         ProductId: product.ProductId,
+        ProductPrice: product.Price,
+        ProductName: product.Name,
         Date:  date,
       });
       addOrderedProductPackage(user,product.Price,date);
@@ -51,16 +53,19 @@ export const getOrderedProductListWithUserId = async (userId,date) => {
 export const addOrderedProducts = async (user, products,totalPrice) => {
   const date= moment().format('YYYY-MM-DD HH:mm:ss')
   try {
-    await Promise.all(products.map(product => 
-      addDoc(collection(db, "OrderedProducts"), {
+    await Promise.all(products.map(async product => {
+      const productDetails = await getProductWithId(product.ProductId);
+      return addDoc(collection(db, "OrderedProducts"), {
         UserName: user.Name,
         UserId: user.UserId,
         Adress: user.Adress,
         ProductId: product.ProductId,
         Count: product.Count,
+        ProductPrice: productDetails.Price,
+        ProductName: productDetails.Name,
         Date: date,
-      })
-    ));
+      });
+    }));
     addOrderedProductPackage(user,totalPrice,date);
     if(Platform.OS === "android"){
       ToastAndroid.show(`Ordered Products added`, ToastAndroid.SHORT); 

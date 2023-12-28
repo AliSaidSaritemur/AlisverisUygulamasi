@@ -8,9 +8,12 @@ import { scale, verticalScale, moderateScale, ScaledSheet } from 'react-native-s
 export default function ProductDetail({ product, visible, onBuyProduct, onCancel,onAddProdutToBasket }) {
   return (
     visible ?
+    
       <Modal
         animationType="slide"
         visible={visible}>
+           <ScrollView    contentContainerStyle={styles.scrollViewContent}
+        keyboardShouldPersistTaps="handled">
           <View style={styles.addBasketContainer}>
             <TouchableOpacity style={styles.addBasket }onPress={() => onAddProdutToBasket(product)} >
               <Ionicons name="basket-outline" size={scale(30)}  />
@@ -20,7 +23,7 @@ export default function ProductDetail({ product, visible, onBuyProduct, onCancel
         <View style={styles.container}>
 
           <View style={styles.image}>
-          <ProductImage productName={product.Name} width={250} height={250} />
+          <ProductImage productName={product.Name} width={scale(250)} height={scale(250)} />
           <Text style={styles.text}>Ürün Adı: {product.Name}</Text>
           <Text style={styles.text}>Ürün Fiyatı: {product.Price}</Text>
           </View>
@@ -38,6 +41,7 @@ export default function ProductDetail({ product, visible, onBuyProduct, onCancel
           
   
         </View>
+        </ScrollView>
       </Modal>
       :null
   )

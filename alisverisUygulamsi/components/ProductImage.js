@@ -17,7 +17,7 @@ export default function ProductImage({productName,width,height}) {
         };
 
         fetchImage();
-    }, []); 
+    }, [productName]); 
 
     return (
               <Image source={{ uri: imageUrl }} style={{width: width, height: height, borderRadius: 30}} />

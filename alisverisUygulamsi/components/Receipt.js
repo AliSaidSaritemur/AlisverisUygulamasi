@@ -15,14 +15,9 @@ export default  function Receipt({visible,onCancel,user,date}) {
       const fetchOrders = async () => {
         setRole(await getSessionsRole());
         setIsLoading(true);
-        const orderProductData = await getOrderedProductListWithUserId(user.UserId,date);
-        const productDetails = await Promise.all(orderProductData.map(item => getProductWithId(item.ProductId)));
-        const mergedProducts = orderProductData.map((orderProduct, index) => {
-          const matchingProduct = productDetails[index];
-          console.log(user)
-          return { ...matchingProduct, ...orderProduct };
-        });
+        const mergedProducts = await getOrderedProductListWithUserId(user.UserId,date);
         setList(mergedProducts);
+        console.log(mergedProducts);
       };
     if(visible==true)
       fetchOrders();
@@ -40,13 +35,12 @@ export default  function Receipt({visible,onCancel,user,date}) {
         renderItem={( {item} ) => (
           <View style={styles.container}>
 
-          <ProductImage productName={item.Name} height={scale(70)} width={scale(70)} />
-
+        <ProductImage productName={item.ProductName} height={scale(70)} width={scale(70)} />
          <View style={styles.productInfoContainer}>
-             <Text style={styles.productInfo} >Ürün Adı:  {item.Name}</Text>
-            <Text style={styles.productInfo} >Ürün Fiyat:  {item.Price}</Text>
+             <Text style={styles.productInfo} >Ürün Adı:  {item.ProductName}</Text>
+            <Text style={styles.productInfo} >Ürün Fiyat:  {item. ProductPrice}</Text>
             <Text style={styles.productInfo} >Ürün Adedi:  {item.Count}</Text>
-            <Text style={styles.productInfo} >İşlem Ücreti:  {item.Price*item.Count}₺</Text> 
+            <Text style={styles.productInfo} >İşlem Ücreti:  {item.ProductPrice*item.Count}₺</Text> 
   
             </View>
     

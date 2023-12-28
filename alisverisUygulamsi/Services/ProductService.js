@@ -16,7 +16,7 @@ export const addProduct = async (name,price ) => {
       ProductId: docRef.id,
     });
     if(Platform.OS === "android"){
-      ToastAndroid.show(`Ürün Eklendi.`, ToastAndroid.SHORT); 
+      ToastAndroid.show(`Product added`, ToastAndroid.SHORT); 
     }
   } catch (e) {
     console.error("Error adding document: ", e);
@@ -106,8 +106,9 @@ export const updateProduct = async (id, name, price) => {
 export const getTotalSalesCount = async () => {
   try {
     const querySnapshot = await getDocs(collection(db, "Products"));
-    const totalSalesCount = querySnapshot.docs.reduce((total, doc) => total + doc.data().SalesCount, 0);
-    return totalSalesCount;
+    const totalSalesCount =  querySnapshot.docs.reduce((total, doc) => total + doc.data().SalesCount, 0);
+     const totalCountNew=totalSalesCount*1;
+    return totalCountNew;
   } catch (error) {
     console.error("Error fetching product list: ", error);
   }
@@ -143,20 +144,22 @@ export const getProductsNotInMarket = async () => {
   }
 }
 
-export const changeIsInMarketValue = async (productId) => {
+export const productOutFromMarket = async (productId) => {
   try {
     const productRef = doc(db, "Products", productId);
-    const productSnap = await getDoc(productRef);
-
-    if (productSnap.exists()) {
-      const productData = productSnap.data();
-      const currentIsInMarketValue = productData.IsInMarket;
-      await updateDoc(productRef, {
-        IsInMarket: !currentIsInMarketValue
-      });
-    } else {
-      console.log(`No product found with id: ${productId}`);
-    }
+    await updateDoc(productRef, {
+      IsInMarket: false
+    });
+  } catch (error) {
+    console.error("Error updating product: ", error);
+  }
+}
+export const productAddMarket = async (productId) => {
+  try {
+    const productRef = doc(db, "Products", productId);
+    await updateDoc(productRef, {
+      IsInMarket: true
+    });
   } catch (error) {
     console.error("Error updating product: ", error);
   }

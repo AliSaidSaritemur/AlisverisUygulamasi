@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View,Image,TouchableOpacity, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View,Image,TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native';
 import UserUpdate from '../components/UserUpdate';
 import LastOrdersUser from '../components/LastOrdersUser';
 import { getSession } from '../Services/SessionsService'; 
@@ -54,6 +54,8 @@ const startModalLastOrders = () => {
 
   return (
     user ?
+    <ScrollView    contentContainerStyle={styles.scrollViewContent}
+    keyboardShouldPersistTaps="handled">
       <View style={styles.container}>
         <Image style={styles.userImage} source={require('../assets/User.jpg')}  />
         <Text style={styles.userName}> {user.Name} </Text>
@@ -74,6 +76,7 @@ const startModalLastOrders = () => {
           <LastOrdersUser visible={modalLastOrdersVisible} onCancel={endModalLastOrders} onRefreshPage={refreshPage} />
       <FavoriteProductsList visible={modalFavoritesVisible} onCancel={endModalFavorites} onRefreshPage={refreshPageFavorites} />
       </View>
+      </ScrollView> 
     :
     <ActivityIndicator size="large" color="blue" />
   );
