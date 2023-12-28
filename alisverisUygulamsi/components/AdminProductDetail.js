@@ -47,7 +47,7 @@ export default function AdminProductDetail({product, visible,onCancel}) {
                     <Text style={styles.buttonText}>Güncelle</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.deleteBttn} onPress={() =>{ productOutFromMarket(product.ProductId);onCancel();}}>
-                    <Text style={styles.buttonText} >Sil</Text>
+                    <Text style={styles.delButtonText} >Satışını Durdur</Text>
                    </TouchableOpacity>
                 </View>
                 <View style={{margin:10}}>
@@ -102,25 +102,29 @@ const styles = ScaledSheet.create({
         backgroundColor: '#00fa9a',
         padding: 10,
         margin: 10,
-        borderRadius: 5,
+        borderRadius: 10,
       },
       deleteBttn:{
         alignItems: 'center',
         backgroundColor: 'red',
-        paddingHorizontal:'',
         padding: 10,
         margin: 10,
-        borderRadius: 5,
+        borderRadius: 10,
       },
       closeBttn:{
         alignItems: 'center',
         padding: 10,
         margin: 10,
-        borderRadius: 5,
+        borderRadius: 10,
       },
       buttonText: {
         fontSize: 18,
         color: '#000',
+        textAlign: 'center',
+      },
+      delButtonText:{
+        fontSize: 18,
+        color: '#FFF',
         textAlign: 'center',
       },
       input:{

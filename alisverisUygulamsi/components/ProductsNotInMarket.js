@@ -21,13 +21,13 @@ useEffect(() => {
     animationType="slide"
     visible={visible}>
 
-        <Text style={{fontSize:20,fontWeight:'bold',textAlign:'center'}}>Markete Çıkarılacak Ürünü Seçiniz</Text>
+        <Text style={{fontSize:20,fontWeight:'bold',textAlign:'center'}}>Markete Eklenecek Seçiniz</Text>
     <FlatList
     data={products}
     numColumns={3}
     renderItem={( {item} ) => (
       <View style={styles.container}>
-              <TouchableOpacity style={[styles.button,{backgroundColor:(selectedProduct && item.Name===selectedProduct.Name)? "green":"white"}]} onPress={() =>{setSelectedProduct(item);  setRefreshPage(!refreshPage);}} >
+              <TouchableOpacity style={[styles.button,{backgroundColor:(selectedProduct && item.Name===selectedProduct.Name)? "turquoise":"white"}]} onPress={() =>{setSelectedProduct(item);  setRefreshPage(!refreshPage);}} >
                 <Text style={styles.buttonText}>{item.Name}</Text>
             </TouchableOpacity>
       </View>
@@ -38,14 +38,22 @@ useEffect(() => {
     </View>
   
 
-      <Button title="Markete Çıkar" onPress={async ()=>{
-        await  productAddMarket(selectedProduct.ProductId);
-        setRefreshPage(!refreshPage);
-        setSelectedProduct(null);
-      }} />
-        <Button title="Kapat" onPress={()=>{    
-      setSelectedProduct(null);
-    onCancel();}} />
+      <TouchableOpacity
+          style={styles.button}
+          onPress={async ()=>{
+          await  productAddMarket(selectedProduct.ProductId);
+          setRefreshPage(!refreshPage);
+          setSelectedProduct(null);
+           }} >
+          <Text style={styles.buttonText}>Markete Ekle</Text>
+      </TouchableOpacity>
+        <TouchableOpacity 
+        style={styles.button}
+        onPress={()=>{    
+          setSelectedProduct(null);
+          onCancel();}}>
+          <Text style={styles.buttonText}>Kapat</Text>
+       </TouchableOpacity>
   </Modal>
   )
 }
@@ -53,19 +61,25 @@ useEffect(() => {
 const styles = StyleSheet.create({
 
   button: {
+    backgroundColor: '#AFE4DE',
     padding: 10,
-    marginVertical: 10,
-    marginHorizontal: 20,
+    margin: 10,
+    alignContent:'center',
     borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#f0f8ff',
+    alignSelf: 'center',
+    width: '80%',
 },
 imageWrapper:{
   alignItems:'center',
   justifyContent:'center',
   borderWidth: 2, 
   borderColor: 'black',
-  backgroundColor: '#E0FFFF',
+  backgroundColor: 'white',
 },
+buttonText:{
+  fontSize: 16,
+  textAlign: 'center',
+  fontWeight: 'bold',
+}
 
 })

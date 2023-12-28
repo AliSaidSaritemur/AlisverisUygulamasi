@@ -52,13 +52,14 @@ const endModalProductsNotInMarket=()=>{
     <View style={styles.container}>
       <ProductList onPressProduct={startModalAdminProductDetail} onRefreshPage={refreshPage}/>
       <AdminProductDetail visible={modalAdminProductDetailVisible} product={product} onCancel={endModalAdminProductDetail}/>
-     
-      <TouchableOpacity style={styles.button} onPress={()=>startModalProductsNotInMarket()}>
-        <Text style={styles.buttonText}>Satışta Olamayn Ürünler</Text>
-      </TouchableOpacity>  
-      <TouchableOpacity style={styles.button} onPress={()=>startModalAddProduct()}>
-        <Text style={styles.buttonText}>Ürün Ekle</Text>
-      </TouchableOpacity>  
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.button} onPress={()=>startModalProductsNotInMarket()}>
+          <Text style={styles.buttonText}>Satılmayan Ürünler</Text>
+        </TouchableOpacity>  
+        <TouchableOpacity style={styles.button} onPress={()=>startModalAddProduct()}>
+          <Text style={styles.buttonText}>Ürün Ekle</Text>
+        </TouchableOpacity>  
+      </View>
       <AddProduct visible={modalAddProductIsVisible} onCancel={endModalAddProduct}/>
       <ProductsNotInMarket  visible={modalAddProductInMarketIsVisible} onCancel={endModalProductsNotInMarket}/>
     </View>
@@ -81,8 +82,14 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     width: '80%',
   },
+  buttonContainer:{
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '55%',
+  },
   buttonText: {
-    fontSize: 24,
+    fontSize: 16,
     color: '#000',
     textAlign: 'center',
   }

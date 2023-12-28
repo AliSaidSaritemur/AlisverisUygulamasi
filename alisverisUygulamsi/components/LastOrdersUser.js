@@ -73,6 +73,8 @@ container:{
     backgroundColor: '#f8f8f8',
     borderRadius: 30,
     padding: 10,
+    borderWidth:2,
+    borderColor:'#000',
 },
 productInfo:{
     fontSize: 16,

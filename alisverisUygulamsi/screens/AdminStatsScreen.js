@@ -59,9 +59,9 @@ export default function AdminStatsScreen({ navigation }) {
         keyExtractor={(item) => `${item.UserId}-${item.Date}`}
         renderItem={({ item }) => (
           <View style={styles.products}>
-            <TouchableOpacity onPress={()=>getReciepe(item.Date,item.UserId)}>
-       <Ionicons name="newspaper-outline" size={scale(100)} color="orange" />
-      </TouchableOpacity>
+              <TouchableOpacity onPress={()=>getReciepe(item.Date,item.UserId)}>
+                <Ionicons name="newspaper-outline" size={scale(100)} color="orange" />
+              </TouchableOpacity>
          <View style={styles.productInfoContainer}>
             <Text style={styles.productInfo} >İşlem Ücreti:  {item.TotalPrice}₺</Text>
             <Text style={styles.productInfo} >İşlem Tarihi:  {item.Date}</Text>
@@ -96,19 +96,22 @@ const styles = StyleSheet.create({
     elevation:5
   },
   products:{
-    flexDirection:'row', 
-   alignItems:'center',
+     flexDirection:'row', 
+     alignItems:'center',
      margin: 6,
      alignItems: 'center',
      backgroundColor: '#f8f8f8',
      borderRadius: 30,
      padding: 10,
+     borderWidth: 2, 
+     borderColor: 'black', 
  },
   productInfo:{
     fontSize: 16,
     fontWeight: 'bold',
 },
 productInfoContainer:{
-  marginLeft: 10,},
+  marginLeft: 10,
+}
 
 })

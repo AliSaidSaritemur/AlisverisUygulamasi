@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from 'react';
-import { View, TextInput, Text,TouchableOpacity } from 'react-native';
+import { View, TextInput, Text,TouchableOpacity,Image } from 'react-native';
 import UserSingUp from '../components/UserSingUp';
 import { ScaledSheet } from 'react-native-size-matters';
 import { logIn,addUser } from '../Services/UserService';
@@ -40,14 +40,15 @@ export default function LoginScreeen ({ navigation })  {
   return (
     
     <View style={styles.container}>
+      <Image style={styles.userImage} source={require('../assets/bakkalamca.png')}  />
       <Text style={styles.title}>Bakkal Amca</Text>
       <TextInput
-        style={styles.input}
+        style={[styles.input,styles.inputText]}
         placeholder="Email"
         onChangeText={(text) => setEmail(text)}
       />
       <TextInput
-        style={styles.input}
+        style={[styles.input,styles.inputText]}
         placeholder="Şifre"
         secureTextEntry
         onChangeText={(text) => setPassword(text)}
@@ -74,11 +75,12 @@ const styles = ScaledSheet.create({
     textAlign: 'center',
   },
   input: {
-    height: 40,
+    height: 60,
     borderColor: 'gray',
     borderWidth: 1,
     marginBottom: 16,
     paddingLeft: 8,
+    borderRadius:30,
   },
   button: {
     alignItems: 'center',
@@ -87,13 +89,30 @@ const styles = ScaledSheet.create({
     marginTop: 16,
   },
   logInButton: {
+    borderRadius:30,
     backgroundColor: '#32CD32',
   },
   buttonText: {
+    textAlign: 'center',
     color: 'white',
     fontWeight: 'bold',
+    fontSize: 18,
+  },
+  inputText:{
+    textAlign: 'center',
+    color: '#000',
+    fontSize: 18,
   },
   SignUputton: {
+    borderRadius:30,
     backgroundColor: '#1976d2',
   },
+  userImage:{
+    width:250,
+    height:250,
+    alignSelf:'center',
+    marginTop:20,
+    marginBottom:20,
+    borderRadius:50,
+  }
 });

@@ -62,7 +62,7 @@ const startModalLastOrders = () => {
         <View style={styles.buttonContainer}>
         <View style={styles.buttonContainer}>
   <TouchableOpacity style={styles.button} onPress={startModalUpdate}>
-    <Text style={styles.buttonText}>Profil Bilgilerini güncelle</Text>
+    <Text style={styles.buttonText}>Profil Bilgilerini Güncelle</Text>
   </TouchableOpacity>
   <TouchableOpacity style={styles.button} onPress={startModalLastOrders}>
     <Text style={styles.buttonText}>Geçmiş Siparişlerim</Text>
@@ -83,6 +83,9 @@ const startModalLastOrders = () => {
 }
 
 const styles = StyleSheet.create({
+  scrollViewContent:{
+    flexGrow: 1,
+  },
 container: {
     flex: 1,
     backgroundColor: '#fff',

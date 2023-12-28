@@ -55,7 +55,7 @@ const [role,setRole]=useState(1);
   name="Home"
   component={HomeScreen}
   options={({ navigation }) => ({
-    title: "MARKETİM",
+    title: "BAKKAL AMCA",
     headerBackVisible: false,
     
     headerRight: () => (
@@ -71,7 +71,7 @@ const [role,setRole]=useState(1);
   name="AdminHome"
   component={AdminHomeScreen}
   options={({ navigation }) => ({
-    title: "ADMİN PANELİ",
+    title: "BAKKAL AMCA ADMİN",
     headerBackVisible: false,
     headerRight: () => (
         <TouchableOpacity onPress={() => {navigation.navigate('Login'); removSession();
