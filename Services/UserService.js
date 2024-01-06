@@ -34,7 +34,7 @@ export const updateUser = async (id, email, name, password, surname, telno, addr
 
   try {
     const userRef = doc(db, "Users", id);
-    const updatedUser = { Email: email, Name: name, Password: password, Surname: surname, TelNo: telno, Adress: address };
+    const updatedUser = { Email: email.trim(), Name: name, Password: password, Surname: surname, TelNo: telno, Adress: address };
     await updateDoc(userRef, updatedUser);
   } catch (error) {
     console.error("Error updating user: ", error);

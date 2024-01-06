@@ -10,7 +10,7 @@ export default function UserSingUp({ visible, onAddUser, onCancel }) {
   const [telNo, setTelNo] = useState("");
   const [adress, setAdress] = useState("");
   const validateInput = async (email, phone, password, name, username) => {
-
+    setEmail(email.trim());
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const nameRegex = /^[A-Za-z\s]+$/;
     const usernameRegex = /^[A-Za-z]+$/;

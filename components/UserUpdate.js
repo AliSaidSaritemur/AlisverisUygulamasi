@@ -24,6 +24,7 @@ export default function UserUpdate({ visible, onUpdateUser, onCancel, user }) {
     setId(user.UserId);
   }, [user])
   const validateInput = async (email, phone, password, name, username) => {
+    setEmail(email.trim());
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const nameRegex = /^[A-Za-z\s]+$/;
     const usernameRegex = /^[A-Za-z]+$/;
