@@ -126,3 +126,16 @@ export const clearUserBasket = async (userId) => {
 
   await Promise.all(querySnapshot.docs.map((doc) => deleteDoc(doc.ref)));
 };
+export const removeBasketProductWithProductId = async (productId) => {
+  try {
+    const q = query(collection(db, "BasketProduct"), where("ProductId", "==", productId));
+    const querySnapshot = await getDocs(q);
+
+    querySnapshot.forEach((doc) => {
+      deleteDoc(doc.ref);
+    });
+
+  } catch (e) {
+    console.error("Error removing document: ", e);
+  }
+}

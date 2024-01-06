@@ -3,10 +3,11 @@ import { View, Text, FlatList, TouchableOpacity, Modal, ActivityIndicator } from
 import { getProductList } from '../Services/ProductService';
 import ProductImage from './ProductImage';
 import { scale, verticalScale, moderateScale, ScaledSheet } from 'react-native-size-matters';
-import { getFavoriteProductList } from '../Services/FavoriteProductService';
+import { getFavoriteProductListWithUserId } from '../Services/FavoriteProductService';
 import FavoriteHeartIcon from './FavoriteHeartIcon';
 import { getProductWithId } from '../Services/ProductService';
 import ProductDetail from './ProductDetail';
+import { getSession } from '../Services/SessionsService';
 const FavoriteProductsList = ({ visible, onCancel, onRefreshPage }) => {
   const [products, setProducts] = useState([]);
   const [productList, setProductList] = useState([]);
@@ -17,7 +18,8 @@ const FavoriteProductsList = ({ visible, onCancel, onRefreshPage }) => {
   useEffect(() => {
     const fetchProducts = async () => {
       setIsLoading(true);
-      const favoriteProductList = await getFavoriteProductList();
+      const session = await getSession();
+const favoriteProductList = await getFavoriteProductListWithUserId(session.UserId);
       setProductList(await Promise.all(favoriteProductList.map(item => getProductWithId(item.ProductId))));
       setProducts(productList);
       setIsLoading(false);

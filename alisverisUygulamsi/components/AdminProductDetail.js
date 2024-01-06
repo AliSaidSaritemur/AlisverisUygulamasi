@@ -5,7 +5,7 @@ import ProductImage from './ProductImage'
 import { scale, verticalScale, moderateScale, ScaledSheet } from 'react-native-size-matters';
 import { useState } from 'react';
 import { updateProduct, productOutFromMarket } from '../Services/ProductService';
-
+import{removeBasketProductWithProductId} from '../Services/BasketProductService';
 
 
 export default function AdminProductDetail({ product, visible, onCancel }) {
@@ -37,7 +37,7 @@ export default function AdminProductDetail({ product, visible, onCancel }) {
                 maxLength={10}
                 value={price.toString()}
                 onChangeText={(text) => {
-                  setPrice(parseFloat(text))
+                  setPrice(parseFloat(text)?parseFloat(text):0)
                 }}
                 placeholder='Ürün Fiyatını Giriniz!'
               />
@@ -46,7 +46,7 @@ export default function AdminProductDetail({ product, visible, onCancel }) {
               <TouchableOpacity style={styles.button} onPress={() => updateProduct(product.ProductId, product.Name, price)}>
                 <Text style={styles.buttonText}>Güncelle</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.deleteBttn} onPress={() => { productOutFromMarket(product.ProductId); onCancel(); }}>
+              <TouchableOpacity style={styles.deleteBttn} onPress={() => { productOutFromMarket(product.ProductId);removeBasketProductWithProductId(product.ProductId); onCancel(); }}>
                 <Text style={styles.delButtonText} >Satışını Durdur</Text>
               </TouchableOpacity>
             </View>

@@ -12,20 +12,13 @@ export default function AdminStatsScreen({ navigation }) {
   const [totalSalesCount, setTotalSalesCount] = useState(0);
   const [orders, setOrders] = useState([]);
   const [receiptVisible, setReceiptVisible] = useState(false);
-  const [user, setUser] = useState(null);
+  const [userId, setUserId] = useState(null);
+  const [userMail, setUserMail] = useState(null);
   const [date, setDate] = useState(null);
   useEffect(() => {
     const fetchStats = async () => {
-      let tempOrders = await getOrderedProductPackageList();
-
-      tempOrders.sort((a, b) => new Date(b.Date) - new Date(a.Date));
-      tempOrders = await Promise.all(tempOrders.map(async (order) => {
-        const user = await getUser(order.UserId);
-        const email = user.Email;
-        return { ...order, Email: email };
-      }));
-
-      setOrders(tempOrders);
+      setOrders (await getOrderedProductPackageList());
+      setOrders(orders.sort((a, b) => new Date(b.Date) - new Date(a.Date)));
     };
 
     fetchStats();
@@ -43,8 +36,9 @@ export default function AdminStatsScreen({ navigation }) {
     });
   }, [navigation]);
 
-  const getReciepe = async (date, userId) => {
-    setUser(await getUser(userId));
+  const getReciepe = async (date, userId,userMail) => {
+    setUserId(userId);
+    setUserMail(userMail);
     setDate(date);
     setReceiptVisible(true);
   }
@@ -59,21 +53,21 @@ export default function AdminStatsScreen({ navigation }) {
         keyExtractor={(item) => `${item.UserId}-${item.Date}`}
         renderItem={({ item }) => (
           <View style={styles.products}>
-            <TouchableOpacity onPress={() => getReciepe(item.Date, item.UserId)}>
+            <TouchableOpacity onPress={() => getReciepe(item.Date, item.UserId,item.UserMail)}>
               <Ionicons name="newspaper-outline" size={scale(100)} color="orange" />
             </TouchableOpacity>
             <View style={styles.productInfoContainer}>
               <Text style={styles.productInfo} >İşlem Ücreti:  {item.TotalPrice}₺</Text>
               <Text style={styles.productInfo} >İşlem Tarihi:  {item.Date}</Text>
               <Text style={styles.productInfo} >Adress:  {item.Adress}</Text>
-              <Text style={styles.productInfo} >Kişi Mail:  {item.Email}</Text>
+              <Text style={styles.productInfo} >Kişi Mail:  {item.UserMail}</Text>
             </View>
 
           </View>
         )}
       />
       <Receipt visible={receiptVisible} onCancel={() => setReceiptVisible(false)}
-        user={user} date={date} />
+        userId={userId} userMail={userMail} date={date} />
     </View>
 
   );

@@ -19,9 +19,10 @@ export default function ProductsNotInMarket({ visible, onCancel }) {
   return (
     <Modal
       animationType="slide"
-      visible={visible}>
-
-      <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}>Markete Eklenecek Seçiniz</Text>
+      visible={visible}
+      style={styles.container}
+      >
+      <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}>Markete Eklenecek Ürünü Seçiniz</Text>
       <FlatList
         data={products}
         numColumns={3}
@@ -61,6 +62,11 @@ export default function ProductsNotInMarket({ visible, onCancel }) {
 
 const styles = StyleSheet.create({
 
+  container: {
+    justifyContent: 'center',
+    padding: 15,
+
+  },
   button: {
     backgroundColor: '#AFE4DE',
     padding: 10,
@@ -69,6 +75,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignSelf: 'center',
     width: '80%',
+    alignSelf: 'center',
   },
   imageWrapper: {
     alignItems: 'center',

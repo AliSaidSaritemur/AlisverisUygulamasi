@@ -7,7 +7,7 @@ import { getProductWithId } from '../Services/ProductService';
 import ProductImage from './ProductImage';
 import { getSessionsRole } from '../Services/SessionsService';
 
-export default function Receipt({ visible, onCancel, user, date }) {
+export default function Receipt({ visible, onCancel, userId,UserMail, date }) {
   const [list, setList] = useState([]);
   const [role, setRole] = useState("user");
   const [isLoading, setIsLoading] = useState(true);
@@ -16,7 +16,7 @@ export default function Receipt({ visible, onCancel, user, date }) {
     const fetchOrders = async () => {
       setRole(await getSessionsRole());
       setIsLoading(true);
-      const mergedProducts = await getOrderedProductListWithUserId(user.UserId, date);
+      const mergedProducts = await getOrderedProductListWithUserId(userId, date);
       setList(mergedProducts);
       setIsLoading(false);
     };
@@ -32,7 +32,7 @@ export default function Receipt({ visible, onCancel, user, date }) {
       animationType="slide"
       visible={visible}>
       <Text style={styles.userMailText}>
-      {(user != null && role == "admin") ? "Kullanıcı Maili :  " + user.Email : "Geçmiş Sipariş"}
+      {( role == "admin") ? "Kullanıcı Maili :  " + UserMail : "Geçmiş Sipariş"}
       </Text>
       {isLoading ? (
     <ActivityIndicator size="large" color="blue" />

@@ -18,7 +18,8 @@ export default function LoginScreeen({ navigation }) {
     setmodalSignUpIsVisible(false)
   }
   const handleLogin = async () => {
-    const loginUser = await logIn(email, password);
+    const trimmedEmail = email.trim();
+    const loginUser = await logIn(trimmedEmail, password);
     if (loginUser != null) {
       setSessionWithId(loginUser.id);
       if (loginUser.Role == "admin") {

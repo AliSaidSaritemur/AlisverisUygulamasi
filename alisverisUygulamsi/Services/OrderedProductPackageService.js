@@ -13,7 +13,7 @@ export const getOrderedProductPackageList = async () => {
     console.error("Error fetching ordered product list: ", error);
   }
 };
-export const addOrderedProductPackage = (user, price, date) => {
+export const addOrderedProductPackage = (user, price, date,mail) => {
   try {
     addDoc(collection(db, "OrderedProductPackage"), {
       UserName: user.Name,
@@ -21,6 +21,7 @@ export const addOrderedProductPackage = (user, price, date) => {
       Adress: user.Adress,
       TotalPrice: price,
       Date: date,
+      UserMail:mail,
     });
   } catch (e) {
     console.error("Error adding document: ", e);

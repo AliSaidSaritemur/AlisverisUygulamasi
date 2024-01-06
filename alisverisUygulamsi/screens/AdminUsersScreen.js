@@ -13,15 +13,18 @@ export default function AdminUsersScreen({ navigation }) {
   const [modalUpdateIsVisible, setModalUpdateIsVisible] = useState(false);
   const [updateInfoPressed, setUpdateInfoPressed] = useState(false);
   const [refreshPage, setRefreshPage] = useState(false);
+  const[userWillUpdate,setUserWillUpdate] = useState();
 
   useEffect(() => {
     const fetchUsers = async () => {
       const fetchedUsers = await getAllUsers();
       setUsers(fetchedUsers);
     };
+    navigation.addListener('focus', () => {
+      fetchUsers();
+    });
 
-    fetchUsers();
-  }, [refreshPage]);
+  }, [refreshPage,navigation]);
   useEffect(() => {
     const fetchId = async () => {
       const user = await getSession();
@@ -33,6 +36,7 @@ export default function AdminUsersScreen({ navigation }) {
 
   const startModalUpdate = (user) => {
     setUser(user);
+    setUserWillUpdate(user);
     setModalUpdateIsVisible(true)
   };
   const endModalUpdate = () => {
@@ -50,7 +54,7 @@ export default function AdminUsersScreen({ navigation }) {
       <View style={styles.item}>
         <Text>{title.Email}</Text>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={() => startModalUpdate(user)}>
+          <TouchableOpacity style={styles.button} onPress={() => startModalUpdate(title)}>
             <Text style={styles.text}>Düzenle</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.delButton} onPress={() => {
@@ -70,7 +74,7 @@ export default function AdminUsersScreen({ navigation }) {
         data={users}
         renderItem={({ item }) => <UserList title={item} />}
       />
-      <UserUpdate visible={modalUpdateIsVisible} onUpdateUser={UpdateUser} onCancel={endModalUpdate} user={user} />
+      <UserUpdate visible={modalUpdateIsVisible} onUpdateUser={UpdateUser} onCancel={endModalUpdate} user={userWillUpdate} />
     </View>
   );
 }

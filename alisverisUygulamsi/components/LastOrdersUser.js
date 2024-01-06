@@ -12,15 +12,16 @@ export default  function LastOrdersUser({visible,onCancel,refreshPage}) {
     const [receiptVisible, setReceiptVisible] = useState(false);
     const [user, setUser] = useState(null);
     const [date, setDate] = useState(null);
+    const [loading, setLoading] = useState(true);
     useEffect(() => {
       const fetchOrders = async () => {
         const sessionUser = await getSession();
-        setUser(sessionUser);
         if (sessionUser) {
           const userOrders = await getOrderedProducPackagetListWithUserId(sessionUser.UserId);
           userOrders.sort((a, b) => new Date(b.Date) - new Date(a.Date));
         setOrders(userOrders);
         }
+        setLoading(false);
       };
     
       fetchOrders();
@@ -56,8 +57,16 @@ const getReciepe=(date)=>{
         onPress={onCancel}>
         <Text>Kapat</Text>
       </TouchableOpacity> 
-      <Receipt visible={receiptVisible} onCancel={()=>setReceiptVisible(false)} 
-      user={user} refreshPage={refreshPage} date={date}/>
+      {!loading && user && (
+          <Receipt 
+            visible={receiptVisible} 
+            onCancel={()=>setReceiptVisible(false)} 
+            userId={user.UserId} 
+            userMail={user.Email} 
+            refreshPage={refreshPage} 
+            date={date}
+          />
+        )}
       </Modal>
      
 
